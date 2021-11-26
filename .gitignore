@@ -102,3 +102,23 @@ dist
 
 # TernJS port file
 .tern-port
+
+### macOS ###
+# General
+.DS_Store
+.AppleDouble
+.LSOverride
+
+### VisualStudioCode ###
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+.vscode/settings.json
+client/.vscode/settings.json
+
+### lock files
+yarn.lock
+package-lock.json

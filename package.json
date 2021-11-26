@@ -1,0 +1,9 @@
+{
+  "name": "collab",
+  "version": "1.0.0",
+  "description": "Employee Management & Community Web App",
+  "main": "index.js",
+  "repository": "https://github.com/felmez/collab.git",
+  "author": "souhaib felmez",
+  "license": "MIT"
+}
