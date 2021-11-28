@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const Project = new mongoose.Schema({
-    title: {
+    title: {s
         type: String,
         required: true
     },
