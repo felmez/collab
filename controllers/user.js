@@ -54,8 +54,38 @@ const deleteUser = async (req, res) => {
     }
 };
 
+const updateUser = async (req, res) => {
+    const userID = req.params.id;
+
+    const { username, name, email, title, password, role, picture, phone } = req.body;
+
+    const user = await userModel.findOne({ _id: userID });
+
+    if (user) {
+        await userModel.updateOne({ _id: userID }, {
+            $set: {
+                username: username,
+                name: name,
+                email: email,
+                title: title,
+                password: password,
+                role: role,
+                picture: picture,
+                phone: phone
+            }
+        }, { new: true }).then(() => {
+            res.status(200).json('user updated successfully');
+        }).catch(() => {
+            res.status(422).json('could not update this user');
+        });
+    } else {
+        res.status(404).json('user not found');
+    }
+};
+
 module.exports = {
     getUsers,
     createUser,
-    deleteUser
+    deleteUser,
+    updateUser
 };
