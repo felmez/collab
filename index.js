@@ -22,13 +22,7 @@ app.set("views", "views");
 app.use('/api', apiRoutes);
 
 app.get("/", async (req, res) => {
-    res.render("index.ejs");
-});
-app.get("/login", async (req, res) => {
-    res.render("pages/login.ejs");
-});
-app.get("/register", async (req, res) => {
-    res.render("pages/register.ejs");
+    res.render("pages/register");
 });
 
 app.listen(port, () => {
