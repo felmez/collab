@@ -3,15 +3,23 @@
   "version": "1.0.0",
   "description": "Employee Management & Community Web App",
   "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index",
+    "serve": "nodemon index"
+  },
   "repository": "https://github.com/felmez/collab.git",
   "author": "Souhaib Felmez",
   "license": "MIT",
   "dependencies": {
     "bcrypt": "^5.0.1",
+    "cookie-parser": "^1.4.6",
     "dotenv": "^10.0.0",
+    "ejs": "^3.1.6",
     "express": "^4.17.1",
     "mongodb": "^4.2.0",
-    "mongoose": "^6.0.13"
+    "mongoose": "^6.0.13",
+    "passport": "^0.5.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.15"

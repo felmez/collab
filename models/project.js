@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const Project = new mongoose.Schema({
-    title: {s
+    title: {
         type: String,
         required: true
     },
@@ -14,6 +14,5 @@ const Project = new mongoose.Schema({
         default: []
     }
 });
-
 
 module.exports = mongoose.model("projects", Project);
