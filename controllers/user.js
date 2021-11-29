@@ -38,7 +38,24 @@ const createUser = async (req, res) => {
     }
 };
 
+const deleteUser = async (req, res) => {
+    const userID = req.params.id;
+
+    const user = await userModel.findOne({ _id: userID });
+
+    if (user) {
+        await userModel.findByIdAndDelete(userID).then(() => {
+            res.status(200).json('user deleted successfully');
+        }).catch(() => {
+            res.status(422).json('could not delete this user');
+        });
+    } else {
+        res.status(404).json('user not found');
+    }
+};
+
 module.exports = {
     getUsers,
-    createUser
+    createUser,
+    deleteUser
 };
