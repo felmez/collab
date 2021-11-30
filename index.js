@@ -22,7 +22,7 @@ app.set("views", "views");
 app.use('/api', apiRoutes);
 
 app.get("/", async (req, res) => {
-    res.render("pages/register");
+    res.render("pages/login");
 });
 
 app.listen(port, () => {

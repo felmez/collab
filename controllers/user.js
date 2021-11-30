@@ -1,3 +1,5 @@
+const bcrypt = require('bcrypt');
+
 const userModel = require("../models/user");
 
 const getUsers = async (req, res) => {
@@ -83,9 +85,54 @@ const updateUser = async (req, res) => {
     }
 };
 
+const adminRegister = async (req, res) => {
+    res.render("pages/register");
+};
+
+const createAdmin = async (req, res) => {
+    const { username, email, role, password, confirmPassword } = req.body;
+
+    try {
+        const existUser = await userModel.findOne({ $or: [{ username: username }, { email: email }] });
+
+        // check if user unique
+        if (existUser) {
+            return res.status(400).render('pages/register', { error: 'username / email is already used' });
+        }
+
+        // check if passwords match
+        if (password !== confirmPassword) {
+            return res.status(400).render('pages/register', { error: 'passwords do not match' });
+        }
+
+        // check if role is admin
+        if (role !== 'admin') {
+            return res.status(400).render('pages/login', { error: 'role should be admin' });
+        }
+
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        const user = new userModel({
+            username,
+            email,
+            role,
+            password: hashedPassword,
+        });
+
+        await user.save();
+
+        res.status(201).redirect('/');
+
+    } catch (error) {
+        return res.status(400).render('pages/register', { error: error });
+    }
+};
+
 module.exports = {
     getUsers,
     createUser,
     deleteUser,
-    updateUser
+    updateUser,
+    adminRegister,
+    createAdmin
 };

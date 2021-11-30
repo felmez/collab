@@ -24,15 +24,19 @@ const User = new mongoose.Schema({
     },
     name: {
         type: String,
+        default: ''
     },
     picture: {
         type: String,
+        default: ''
     },
     phone: {
         type: String,
+        default: ''
     },
     title: {
         type: String,
+        default: ''
     }
 });
 
