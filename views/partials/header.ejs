@@ -9,10 +9,21 @@
     <!-- website's icon -->
     <link rel="shortcut icon" href="<%=process.env.BASE_URL%>/images/cLogo.png" />
 
+
+
+    <link rel="stylesheet" href="<%=process.env.BASE_URL%>/css/libs.min.css">
+    <link rel="stylesheet" href="<%=process.env.BASE_URL%>/css/socialv.css?v=4.0.0">
+    <link rel="stylesheet" href="<%=process.env.BASE_URL%>/vendor/@fortawesome/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="<%=process.env.BASE_URL%>/vendor/remixicon/fonts/remixicon.css">
+    <link rel="stylesheet" href="<%=process.env.BASE_URL%>/vendor/vanillajs-datepicker/dist/css/datepicker.min.css">
+    <link rel="stylesheet" href="<%=process.env.BASE_URL%>/vendor/font-awesome-line-awesome/css/all.min.css">
+    <link rel="stylesheet"
+        href="<%=process.env.BASE_URL%>/vendor/line-awesome/dist/line-awesome/css/line-awesome.min.css">
     <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
     <link href='https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css' rel='stylesheet'>
     <link href='https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css' rel='stylesheet'>
     <link href='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js' rel='stylesheet'>
+    <link rel="shortcut icon" href="<%=process.env.BASE_URL%>/images/cLogo.png" />
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
@@ -503,113 +514,133 @@
     </style>
 </head>
 
-<body>
-
-    <div class="sidebar close" style="margin-top: 25px;">
-        <div class="logo-details">
-            <i class='logo-pic'><img src="<%=process.env.BASE_URL%>/images/cLogo.png" style="height: 30px"></i>
-            <span class="logo_name" style="color: #4D4D4D; font-size: 30px;">Collab</span>
+<body class=" ">
+    <!-- loader Start -->
+    <div id="loading">
+        <div id="loading-center">
         </div>
-        <ul class="nav-links">
-            <li>
-                <a href="#" style="border-left: 3px solid #8759F2;">
-                    <i class='bx bx-grid-alt' style="color: #8759F2;"></i>
-                    <span class="link_name" style="color: #8759F2;">Dashboard</span>
-                </a>
-                <ul class="sub-menu blank">
-                    <li><a class="link_name" href="/dashboard">Dashboard</a></li>
-                </ul>
-            </li>
-            <li>
-                <div class="iocn-link">
-                    <a href="#">
-                        <i class='bx bx-user'></i>
-                        <span class="link_name">Community</span>
-                    </a>
-                    <i class='bx bxs-chevron-down arrow'></i>
-                </div>
-                <ul class="sub-menu">
-                    <li><a class="link_name">Community</a></li>
-                    <li><a href="/feed">Feed</a></li>
-                    <li><a href="/profile">Profile</a></li>
-                    <li><a href="/message">Messages</a></li>
-                    <li><a href="/api/teams">Teams</a></li>
-                    <li><a href="/api/users/">Users</a></li>
-                </ul>
-            </li>
-            <li>
-                <div class="iocn-link">
-                    <a href="#">
-                        <i class='bx bx-book-alt'></i>
-                        <span class="link_name">Management</span>
-                    </a>
-                    <i class='bx bxs-chevron-down arrow'></i>
-                </div>
-                <ul class="sub-menu">
-                    <li><a class="link_name">Management</a></li>
-                    <li><a href="/calendar">Calendar</a></li>
-                    <li><a href="/api/tasks">Tasks</a></li>
-                    <li><a href="/api/projects">Projects</a></li>
-                    <li><a href="/api/companies">Companies</a></li>
-                </ul>
-            </li>
-
-            <li>
-                <a href="#">
-                    <i class='bx bx-line-chart'></i>
-                    <span class="link_name">Analytics</span>
-                </a>
-                <ul class="sub-menu blank">
-                    <li><a class="link_name" href="#">Analytics</a></li>
-                </ul>
-            </li>
-
-            <li>
-                <a href="#">
-                    <i class='bx bx-cog'></i>
-                    <span class="link_name">Settings</span>
-                </a>
-                <ul class="sub-menu blank">
-                    <li><a class="link_name" href="#">Settings</a></li>
-                </ul>
-            </li>
-
-            <li>
-                <div class="profile-details">
-                    <a href="/api/users/logout" class="nav-link active"><i class='bx bx-log-out'></i></a>
-                </div>
-
-            </li>
-
-        </ul>
     </div>
-    <section class="home-section">
-        <div class="home-content" style="margin-bottom: 70px; ">
-            <i class='bx bx-menu'></i>
-            <div class="mininav-div">
 
-                <ul class="mininav-links" style="width: 100%; margin: 0 auto; ">
-                    <span class="text" style="padding: 15px; margin: 0 auto 0 0;">Hello, <%= user ? user.name
-                            : 'not user' %></span>
+    <% if (locals.error) { %>
+        <div class="d-none" id="error-msg">
+            <%= error %>
+        </div>
+        <% } %>
+            <div id="message-wrap" class="position-fixed bottom-0 end-0 p-3 pb-5 mb-5 me-5" style="z-index: 11;">
+                <div class="toast align-items-center text-white border-0" role="alert" aria-live="assertive"
+                    aria-atomic="true" data-bs-delay="3000">
 
-                    <li><a href="#">
-                            <div class="search-container">
-                                <form action="/search" method="get">
-                                    <input class="search expandright" id="searchright" type="search" name="q"
-                                        placeholder="Search">
-                                    <label class="button searchbutton" for="searchright"><span class="mglass"><i
-                                                class='bx bx-search'></i></span></label>
-                                </form>
-                            </div>
+                </div>
+            </div>
+            <!-- loader END -->
+
+
+
+            <div class="sidebar close" style="margin-top: 25px;">
+                <div class="logo-details">
+                    <i class='logo-pic'><img src="<%=process.env.BASE_URL%>/images/cLogo.png" style="height: 30px"></i>
+                    <span class="logo_name" style="color: #4D4D4D; font-size: 30px;">Collab</span>
+                </div>
+                <ul class="nav-links">
+                    <li>
+                        <a href="#" style="border-left: 3px solid #8759F2;">
+                            <i class='bx bx-grid-alt' style="color: #8759F2;"></i>
+                            <span class="link_name" style="color: #8759F2;">Dashboard</span>
                         </a>
+                        <ul class="sub-menu blank">
+                            <li><a class="link_name" href="/dashboard">Dashboard</a></li>
+                        </ul>
                     </li>
-                    <li><a href="#"><i class='bx bx-bell'></i></a></li>
-                    <li><a href="#"><i class='bx bx-expand'></i></a></li>
-                    <li><a href="/profile"> <img src="<%= user ? user.picture : '' %>"
-                                style="height: 50px; border-radius: 50%; border: 2px solid #4d4d4d;"></a></li>
-                    <li class="nav-item">
-                        <a href="/api/users/logout" class="nav-link active">Logout</a>
+                    <li>
+                        <div class="iocn-link">
+                            <a href="#">
+                                <i class='bx bx-user'></i>
+                                <span class="link_name">Community</span>
+                            </a>
+                            <i class='bx bxs-chevron-down arrow'></i>
+                        </div>
+                        <ul class="sub-menu">
+                            <li><a class="link_name">Community</a></li>
+                            <li><a href="/feed">Feed</a></li>
+                            <li><a href="/profile">Profile</a></li>
+                            <li><a href="/message">Messages</a></li>
+                            <li><a href="/api/teams">Teams</a></li>
+                            <li><a href="/api/users/">Users</a></li>
+                        </ul>
                     </li>
+                    <li>
+                        <div class="iocn-link">
+                            <a href="#">
+                                <i class='bx bx-book-alt'></i>
+                                <span class="link_name">Management</span>
+                            </a>
+                            <i class='bx bxs-chevron-down arrow'></i>
+                        </div>
+                        <ul class="sub-menu">
+                            <li><a class="link_name">Management</a></li>
+                            <li><a href="/calendar">Calendar</a></li>
+                            <li><a href="/api/tasks">Tasks</a></li>
+                            <li><a href="/api/projects">Projects</a></li>
+                            <li><a href="/api/companies">Companies</a></li>
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a href="#">
+                            <i class='bx bx-line-chart'></i>
+                            <span class="link_name">Analytics</span>
+                        </a>
+                        <ul class="sub-menu blank">
+                            <li><a class="link_name" href="#">Analytics</a></li>
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a href="#">
+                            <i class='bx bx-cog'></i>
+                            <span class="link_name">Settings</span>
+                        </a>
+                        <ul class="sub-menu blank">
+                            <li><a class="link_name" href="#">Settings</a></li>
+                        </ul>
+                    </li>
+
+                    <li>
+                        <div class="profile-details">
+                            <a href="/api/users/logout" class="nav-link active"><i class='bx bx-log-out'></i></a>
+                        </div>
+
+                    </li>
+
                 </ul>
             </div>
-        </div>
+            <section class="home-section">
+                <div class="home-content" style="margin-bottom: 70px; ">
+                    <i class='bx bx-menu'></i>
+                    <div class="mininav-div">
+
+                        <ul class="mininav-links" style="width: 100%; margin: 0 auto; ">
+                            <span class="text" style="padding: 15px; margin: 0 auto 0 0;">Hello, <%= user ? user.name
+                                    : 'not user' %></span>
+
+                            <li><a href="#">
+                                    <div class="search-container">
+                                        <form action="/search" method="get">
+                                            <input class="search expandright" id="searchright" type="search" name="q"
+                                                placeholder="Search">
+                                            <label class="button searchbutton" for="searchright"><span class="mglass"><i
+                                                        class='bx bx-search'></i></span></label>
+                                        </form>
+                                    </div>
+                                </a>
+                            </li>
+                            <li><a href="#"><i class='bx bx-bell'></i></a></li>
+                            <li><a href="#"><i class='bx bx-expand'></i></a></li>
+                            <li><a href="/profile"> <img src="<%= user ? user.picture : '' %>"
+                                        style="height: 50px; border-radius: 50%; border: 2px solid #4d4d4d;"></a></li>
+                            <li class="nav-item">
+                                <a href="/api/users/logout" class="nav-link active">Logout</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>

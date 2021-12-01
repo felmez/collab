@@ -16,7 +16,9 @@ const getUsers = async (req, res) => {
 };
 
 const createUser = async (req, res) => {
-    const { username, name, email, title, password, role, picture, phone } = req.body;
+    const { username, name, email, title, role, picture, phone } = req.body;
+
+    const users = await userModel.find({});
 
     try {
         const user = new userModel({
@@ -24,7 +26,6 @@ const createUser = async (req, res) => {
             name: name,
             email: email,
             title: title,
-            password: password,
             role: role,
             picture: picture,
             phone: phone
@@ -33,12 +34,13 @@ const createUser = async (req, res) => {
         await user.save();
 
         if (user._id) {
-            res.status(200).json(user);
+            res.redirect("/api/users");
         } else {
-            res.status(422).json('could not create user');
+            res.render("pages/users", { error: 'could not create user', user: req.user, users: users });
         }
     } catch (error) {
-        res.status(422).json(error.message);
+        console.log(req.user);
+        res.render("pages/users", { error: error, user: req.user, users: users });
     }
 };
 
@@ -48,20 +50,26 @@ const deleteUser = async (req, res) => {
     const user = await userModel.findOne({ _id: userID });
 
     if (user) {
-        await userModel.findByIdAndDelete(userID).then(() => {
-            res.status(200).json('user deleted successfully');
-        }).catch(() => {
-            res.status(422).json('could not delete this user');
-        });
+        if (user._id == req.user.id) {
+            res.status(200).json('you can\'t delete yourself');
+        } else {
+            await userModel.findByIdAndDelete(userID).then(() => {
+                res.status(200).json('user deleted successfully');
+            }).catch(() => {
+                res.status(200).json('could not delete this user');
+            });
+        }
     } else {
-        res.status(404).json('user not found');
+        res.status(422).json('user not found');
     }
 };
 
 const updateUser = async (req, res) => {
     const userID = req.params.id;
 
-    const { username, name, email, title, password, role, picture, phone } = req.body;
+    const { username, name, email, title, role, picture, phone } = req.body;
+
+    console.log(req.body);
 
     const user = await userModel.findOne({ _id: userID });
 
@@ -72,7 +80,6 @@ const updateUser = async (req, res) => {
                 name: name,
                 email: email,
                 title: title,
-                password: password,
                 role: role,
                 picture: picture,
                 phone: phone
@@ -83,7 +90,7 @@ const updateUser = async (req, res) => {
             res.status(422).json('could not update this user');
         });
     } else {
-        res.status(404).json('user not found');
+        res.status(422).json('user not found');
     }
 };
 
@@ -105,7 +112,7 @@ const registerAdmin = async (req, res) => {
 
         // check if role is admin
         if (role !== 'admin') {
-            return res.status(400).render('pages/login', { error: 'role should be admin' });
+            return res.status(400).render('pages/register', { error: 'role should be admin' });
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
@@ -127,6 +134,8 @@ const registerAdmin = async (req, res) => {
 };
 
 const login = async (req, res) => {
+
+    console.log(req.body);
     const { email, password } = req.body;
 
     const existUser = await userModel.findOne({ email: email });

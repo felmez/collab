@@ -119,50 +119,5 @@
                 </section>
             </div>
 
-            <!-- Backend Bundle JavaScript -->
-            <script src="<%=process.env.BASE_URL%>/js/libs.min.js"></script>
-            <!-- slider JavaScript -->
-            <script src="<%=process.env.BASE_URL%>/js/slider.js"></script>
-            <!-- masonry JavaScript -->
-            <script src="<%=process.env.BASE_URL%>/js/masonry.pkgd.min.js"></script>
-            <!-- SweetAlert JavaScript -->
-            <script src="<%=process.env.BASE_URL%>/js/enchanter.js"></script>
-            <!-- SweetAlert JavaScript -->
-            <script src="<%=process.env.BASE_URL%>/js/sweetalert.js"></script>
-            <!-- app JavaScript -->
-            <script src="<%=process.env.BASE_URL%>/js/charts/weather-chart.js"></script>
-            <script src="<%=process.env.BASE_URL%>/js/app.js"></script>
-            <script src="<%=process.env.BASE_URL%>/vendor/vanillajs-datepicker/dist/js/datepicker.min.js"></script>
-            <script src="<%=process.env.BASE_URL%>/js/lottie.js"></script>
 
-</body>
-
-<script>
-    let msgEl = document.querySelector('#message-wrap .toast')
-    let msg = bootstrap.Toast.getOrCreateInstance(msgEl) // Returns a Bootstrap toast instance
-    let error = document.getElementById('error-msg')
-
-    window.showMessage = (message, bg) => {
-        let currentBg = ''
-        msgEl.classList.forEach(cls => {
-            if (cls.startsWith('bg-')) {
-                currentBg = cls
-            }
-        })
-        currentBg.length && msgEl.classList.remove(currentBg)
-        msgEl.classList.add(bg)
-        msgEl.innerHTML = `<div class="d-flex">
-            <div class="toast-body">
-              ${message}
-            </div>
-            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-          </div>`
-        msg.show()
-    }
-
-    if (error) {
-        showMessage(error.textContent, 'bg-danger')
-    }
-</script>
-
-</html>
+            <%- include('../partials/footer') %>
