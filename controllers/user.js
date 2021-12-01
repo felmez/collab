@@ -1,13 +1,15 @@
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 const userModel = require("../models/user");
+const { SECRET_KEY } = require('../middleware/isLogged');
+
 
 const getUsers = async (req, res) => {
     const users = await userModel.find({});
 
     if (users.length > 0) {
-        res.status(200).json(users);
-        // res.render("dashboard/users", { users: users });
+        res.render("dashboard/users", { users: users });
     } else {
         res.status(404).json('no users found');
     }
@@ -85,11 +87,7 @@ const updateUser = async (req, res) => {
     }
 };
 
-const adminRegister = async (req, res) => {
-    res.render("pages/register");
-};
-
-const createAdmin = async (req, res) => {
+const registerAdmin = async (req, res) => {
     const { username, email, role, password, confirmPassword } = req.body;
 
     try {
@@ -128,11 +126,49 @@ const createAdmin = async (req, res) => {
     }
 };
 
+const login = async (req, res) => {
+    const { email, password } = req.body;
+
+    const existUser = await userModel.findOne({ email: email });
+
+    if (!existUser) {
+        return res.status(400).render('pages/login', { error: 'wrong username or password' });
+    }
+
+    const valid = await bcrypt.compare(password, existUser.password);
+
+    if (!valid) {
+        return res.status(400).render('pages/login', { error: 'wrong username or password' });
+    }
+
+    const userInToken = {
+        id: existUser._id,
+        username: existUser.username,
+        email: existUser.email,
+        role: existUser.role
+    };
+
+    const token = jwt.sign(userInToken, SECRET_KEY, {
+        expiresIn: '15min',
+    });
+
+    res.cookie('token', token, {
+        httpOnly: true,
+    });
+
+    res.status(200).redirect('/dashboard');
+};
+
+const logout = async (req, res) => {
+    return res.clearCookie('token').status(400).render('pages/login');
+};
+
 module.exports = {
     getUsers,
     createUser,
     deleteUser,
     updateUser,
-    adminRegister,
-    createAdmin
+    registerAdmin,
+    login,
+    logout
 };

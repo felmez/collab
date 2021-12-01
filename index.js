@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser');
 
 const connectToMongo = require("./database/config");
 const apiRoutes = require('./routes');
+const { isLogged } = require('./middleware/isLogged');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -21,8 +22,20 @@ app.set("views", "views");
 
 app.use('/api', apiRoutes);
 
-app.get("/", async (req, res) => {
-    res.render("pages/login");
+app.get("/", isLogged, async (req, res) => {
+    if (req.user.id) {
+        res.redirect('/dashboard');
+    } else {
+        res.render("pages/login");
+    }
+});
+
+app.get("/dashboard", isLogged, async (req, res) => {
+    res.render("pages/dashboard");
+});
+
+app.get("/secret", async (req, res) => {
+    res.render("pages/register");
 });
 
 app.listen(port, () => {
