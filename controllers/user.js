@@ -51,12 +51,12 @@ const deleteUser = async (req, res) => {
 
     if (user) {
         if (user._id == req.user.id) {
-            res.status(200).json('you can\'t delete yourself');
+            res.status(422).json('you can\'t delete yourself');
         } else {
             await userModel.findByIdAndDelete(userID).then(() => {
                 res.status(200).json('user deleted successfully');
             }).catch(() => {
-                res.status(200).json('could not delete this user');
+                res.status(422).json('could not delete this user');
             });
         }
     } else {
@@ -68,8 +68,6 @@ const updateUser = async (req, res) => {
     const userID = req.params.id;
 
     const { username, name, email, title, role, picture, phone } = req.body;
-
-    console.log(req.body);
 
     const user = await userModel.findOne({ _id: userID });
 
@@ -85,12 +83,12 @@ const updateUser = async (req, res) => {
                 phone: phone
             }
         }, { new: true }).then(() => {
-            res.status(200).json('user updated successfully');
+            res.redirect("/api/users");
         }).catch(() => {
-            res.status(422).json('could not update this user');
+            res.render("pages/users", { error: 'could not create user' });
         });
     } else {
-        res.status(422).json('user not found');
+        res.render("pages/users", { error: 'user not found' });
     }
 };
 

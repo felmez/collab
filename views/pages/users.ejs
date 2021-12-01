@@ -34,7 +34,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <form action="/api/users" method="POST">
+                                    <form action="/api/users/create" method="POST">
                                         <tr>
                                             <td><input type="text" name="name" /></td>
                                             <td><input type="text" name="title" /></td>
@@ -50,8 +50,7 @@
                                         </tr>
                                     </form>
                                     <% users.forEach(function(user){ %>
-
-                                        <form>
+                                        <form action="/api/users/update/<%= user.id%>" method="POST">
                                             <tr>
                                                 <td>
                                                     <input type="text" name="name" value="<%= user.name %>" />
@@ -75,14 +74,15 @@
                                                     <input type="text" name="role" value="<%= user.role %>" />
                                                 </td>
                                                 <td>
-                                                    <button type="submit" onclick="makePUTrequest('<%= user.id %>')"
+                                                    <button type="submit"
                                                         class="btn btn-primary btn-rounded btn-sm my-0">Save</button></span>
                                                     <button type="button" class="btn btn-danger btn-rounded btn-sm my-0"
                                                         onclick="makeDELETErequest('<%= user.id %>')">Delete</button></span>
                                                 </td>
                                             </tr>
-
                                         </form>
+
+
 
 
                                         <% }); %>
@@ -101,12 +101,15 @@
             <script>
                 function makeDELETErequest(id) {
                     $.ajax({
-                        url: `http://localhost:3000/api/users/${id}`,
+                        url: `http://localhost:3000/api/users/delete/${id}`,
                         type: 'DELETE',
                         success: function (result) {
-                            if (confirm(result)) {
-                                window.location.reload();
-                            }
+                            alert(result)
+                            window.location.reload();
+                        },
+                        error: function (result) {
+                            alert(result.responseText)
+                            window.location.reload();
                         },
                     });
                 }
