@@ -7,12 +7,7 @@ const { SECRET_KEY } = require('../middleware/isLogged');
 
 const getUsers = async (req, res) => {
     const users = await userModel.find({});
-
-    if (users.length > 0) {
-        res.render("pages/users", { users: users, user: req.user });
-    } else {
-        res.status(404).json('no users found');
-    }
+    res.render("pages/users", { users: users, user: req.user });
 };
 
 const createUser = async (req, res) => {
@@ -39,7 +34,6 @@ const createUser = async (req, res) => {
             res.render("pages/users", { error: 'could not create user', user: req.user, users: users });
         }
     } catch (error) {
-        console.log(req.user);
         res.render("pages/users", { error: error, user: req.user, users: users });
     }
 };

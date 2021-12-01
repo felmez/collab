@@ -8,9 +8,8 @@ const Team = new mongoose.Schema({
     description: {
         type: String,
     },
-    userRef: {
-        type: String,
-        required: true
+    users: {
+        type: [String]
     }
 });
 

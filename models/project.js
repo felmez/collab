@@ -5,7 +5,7 @@ const Project = new mongoose.Schema({
         type: String,
         required: true
     },
-    userRef: {
+    user: {
         type: String,
         required: true
     },

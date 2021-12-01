@@ -50,7 +50,7 @@
                                         </tr>
                                     </form>
                                     <% users.forEach(function(user){ %>
-                                        <form action="/api/users/update/<%= user.id%>" method="POST">
+                                        <form action="/api/users/update/<%= user._id%>" method="POST">
                                             <tr>
                                                 <td>
                                                     <input type="text" name="name" value="<%= user.name %>" />
@@ -77,7 +77,7 @@
                                                     <button type="submit"
                                                         class="btn btn-primary btn-rounded btn-sm my-0">Save</button></span>
                                                     <button type="button" class="btn btn-danger btn-rounded btn-sm my-0"
-                                                        onclick="makeDELETErequest('<%= user.id %>')">Delete</button></span>
+                                                        onclick="makeDELETErequest('<%= user._id %>')">Delete</button></span>
                                                 </td>
                                             </tr>
                                         </form>
@@ -93,8 +93,6 @@
                         </div>
                     </div>
                 </div>
-
-
 
             </div>
 

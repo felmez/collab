@@ -1,0 +1,97 @@
+<%- include('../partials/header') %>
+
+    <% if (locals.error) { %>
+        <div class="d-none" id="error-msg">
+            <%= error %>
+        </div>
+        <% } %>
+            <div id="message-wrap" class="position-fixed bottom-0 end-0 p-3 pb-5 mb-5 me-5" style="z-index: 11;">
+                <div class="toast align-items-center text-white border-0" role="alert" aria-live="assertive"
+                    aria-atomic="true" data-bs-delay="3000">
+
+                </div>
+            </div>
+            <div>
+
+                <div class="card">
+                    <h3 class="card-header text-center font-weight-bold text-uppercase py-4">
+                        Companies
+                    </h3>
+                    <div class="card-body">
+
+                        <div id="table" class="table-editable">
+                            <table class="table table-bordered table-responsive-md table-striped text-center">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Number of Employees</th>
+                                        <th>Business Field</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <form action="/api/companies/create" method="POST">
+                                        <tr>
+                                            <td><input type="text" name="name" /></td>
+                                            <td><input type="text" p name="numberOfEmployees" /></td>
+                                            <td><input type="text" name="businessField" /></td>
+                                            <td> <span><button type="submit"
+                                                        class="btn btn-success btn-rounded btn-sm my-0">Create
+                                                        New</button></span>
+                                            </td>
+                                        </tr>
+                                    </form>
+                                    <% companies.forEach(function(company){ %>
+                                        <form action="/api/companies/update/<%= company._id%>" method="POST">
+                                            <tr>
+                                                <td>
+                                                    <input type="text" name="name" value="<%= company.name %>" />
+                                                </td>
+                                                <td>
+                                                    <input type="text" name="numberOfEmployees"
+                                                        value="<%= company.numberOfEmployees %>" />
+                                                </td>
+                                                <td>
+                                                    <input type="text" name="businessField"
+                                                        value="<%= company.businessField %>" />
+                                                </td>
+
+                                                <td>
+                                                    <button type="submit"
+                                                        class="btn btn-primary btn-rounded btn-sm my-0">Save</button></span>
+                                                    <button type="button" class="btn btn-danger btn-rounded btn-sm my-0"
+                                                        onclick="makeDELETErequest('<%= company._id %>')">Delete</button></span>
+                                                </td>
+                                            </tr>
+                                        </form>
+
+                                        <% }); %>
+
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <script>
+                function makeDELETErequest(id) {
+                    $.ajax({
+                        url: `http://localhost:3000/api/companies/delete/${id}`,
+                        type: 'DELETE',
+                        success: function (result) {
+                            alert(result)
+                            window.location.reload();
+                        },
+                        error: function (result) {
+                            alert(result.responseText)
+                            window.location.reload();
+                        },
+                    });
+                }
+            </script>
+
+
+            <%- include('../partials/footer') %>
