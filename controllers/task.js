@@ -4,8 +4,7 @@ const getTasks = async (req, res) => {
     const tasks = await taskModel.find({});
 
     if (tasks.length > 0) {
-        res.status(200).json(tasks);
-        // res.render("dashboard/users", { users: users });
+        res.render("pages/tasks", { tasks: tasks });
     } else {
         res.status(404).json('no tasks found');
     }

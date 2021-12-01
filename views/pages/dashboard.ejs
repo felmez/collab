@@ -1,799 +1,176 @@
-<!DOCTYPE html>
-<html>
-
-<head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Collab | Dashboard</title>
-    <!-- website's icon -->
-    <link rel="shortcut icon" href="images/cLogo.png" />
-
-    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
-    <link href='https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css' rel='stylesheet'>
-    <link href='https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css' rel='stylesheet'>
-    <link href='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js' rel='stylesheet'>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
-        }
-
-        .sidebar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            height: 100%;
-            width: 260px;
-            background: #fff;
-            z-index: 100;
-            transition: all 0.5s ease;
-        }
-
-        .sidebar.close {
-            width: 78px;
-        }
-
-        .sidebar .logo-details {
-            height: 60px;
-            width: 100%;
-            display: flex;
-            align-items: center;
-        }
-
-        .sidebar .logo-details i {
-            font-size: 30px;
-            height: 55px;
-            min-width: 78px;
-            text-align: center;
-            line-height: 50px;
-        }
-
-        .sidebar .logo-details .logo_name {
-            font-size: 22px;
-            color: #000;
-            font-weight: 600;
-            transition: 0.3s ease;
-            transition-delay: 0.1s;
-        }
-
-        .sidebar.close .logo-details .logo_name {
-            transition-delay: 0s;
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        .sidebar .nav-links {
-            height: 100%;
-            padding: 30px 0 0 0;
-            overflow: auto;
-        }
-
-        .sidebar.close .nav-links {
-            overflow: visible;
-        }
-
-        .sidebar .nav-links::-webkit-scrollbar {
-            display: none;
-        }
-
-        .sidebar .nav-links li {
-            position: relative;
-            list-style: none;
-            transition: all 0.4s ease;
-        }
-
-        .sidebar .nav-links li .iocn-link {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .sidebar.close .nav-links li .iocn-link {
-            display: block
-        }
-
-        .sidebar .nav-links li i {
-            height: 60px;
-            min-width: 78px;
-            text-align: center;
-            line-height: 60px;
-            color: #000;
-            font-size: 20px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .sidebar .nav-links li.showMenu i.arrow {
-            transform: rotate(-180deg);
-        }
-
-        .sidebar.close .nav-links i.arrow {
-            display: none;
-        }
-
-        .sidebar .nav-links li a {
-            display: flex;
-            align-items: center;
-            text-decoration: none;
-        }
-
-        .sidebar .nav-links li a .link_name {
-            font-size: 18px;
-            font-weight: 400;
-            color: #000;
-            transition: all 0.4s ease;
-        }
-
-        .sidebar.close .nav-links li a .link_name {
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        .sidebar .nav-links li .sub-menu {
-            padding: 6px 6px 14px 80px;
-            margin-top: -10px;
-            background: #fff;
-            display: none;
-        }
-
-        .sidebar .nav-links li.showMenu .sub-menu {
-            display: block;
-        }
-
-        .sidebar .nav-links li .sub-menu a {
-            color: #000;
-            font-size: 15px;
-            padding: 5px 0;
-            white-space: nowrap;
-            opacity: 0.6;
-            transition: all 0.3s ease;
-        }
-
-        .sidebar .nav-links li .sub-menu a:hover {
-            opacity: 1;
-            color: #8759F2;
-        }
-
-        .sidebar.close .nav-links li .sub-menu {
-            position: absolute;
-            left: 100%;
-            top: -10px;
-            margin-top: 0;
-            padding: 10px 20px;
-            border-radius: 0 6px 6px 0;
-            opacity: 0;
-            display: block;
-            pointer-events: none;
-            transition: 0s;
-        }
-
-        .sidebar.close .nav-links li:hover .sub-menu {
-            top: 0;
-            opacity: 1;
-            pointer-events: auto;
-            transition: all 0.4s ease;
-        }
-
-        .sidebar .nav-links li .sub-menu .link_name {
-            display: none;
-        }
-
-        .sidebar.close .nav-links li .sub-menu .link_name {
-            font-size: 18px;
-            opacity: 1;
-            display: block;
-        }
-
-        .sidebar .nav-links li .sub-menu.blank {
-            opacity: 1;
-            pointer-events: auto;
-            padding: 3px 20px 6px 16px;
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        .sidebar .nav-links li:hover .sub-menu.blank {
-            top: 50%;
-            transform: translateY(-50%);
-        }
-
-        .sidebar .profile-details {
-            position: fixed;
-            bottom: 0;
-            width: 260px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 12px 0;
-            transition: all 0.5s ease;
-        }
-
-        .sidebar.close .profile-details {
-            background: none;
-        }
-
-        .sidebar.close .profile-details {
-            width: 78px;
-        }
-
-        .sidebar .profile-details .profile-content {
-            display: flex;
-            align-items: center;
-        }
-
-        .sidebar .profile-details .profile_name,
-        .sidebar .profile-details .job {
-            color: #000;
-            font-size: 18px;
-            font-weight: 500;
-            white-space: nowrap;
-        }
-
-        .sidebar.close .profile-details i,
-        .sidebar.close .profile-details .profile_name,
-        .sidebar.close .profile-details .job {
-            display: none;
-        }
-
-        .sidebar .profile-details .job {
-            font-size: 12px;
-        }
-
-        .home-section {
-            position: relative;
-            background: #E4E9F7;
-            padding-bottom: 60px;
-            height: 100%;
-            left: 260px;
-            width: calc(100% - 260px);
-            transition: all 0.5s ease;
-        }
-
-        .sidebar.close~.home-section {
-            left: 78px;
-            width: calc(100% - 78px);
-        }
-
-        .home-section .home-content {
-            height: 60px;
-            display: flex;
-            align-items: center;
-        }
-
-        .home-section .home-content .bx-menu,
-        .home-section .home-content .text {
-            color: #000;
-            font-size: 35px;
-        }
-
-        .home-section .home-content .bx-menu {
-            margin: 0 15px;
-            margin-top: 50px;
-            cursor: pointer;
-        }
-
-        .home-section .home-content .text {
-            font-size: 26px;
-            font-weight: 600;
-        }
-
-        @media (max-width: 420px) {
-            .sidebar.close .nav-links li .sub-menu {
-                display: none;
-            }
-        }
-
-        .mininav-links {
-            display: flex;
-            align-items: center;
-            background: #fff;
-            padding: 10px 10px;
-            border-radius: 12px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-        }
-
-        .mininav-links li {
-            list-style: none;
-            margin: 0 15px;
-        }
-
-        .mininav-links li a {
-            position: relative;
-            color: #333;
-            font-size: 20px;
-            font-weight: 500;
-            padding: 6px 0;
-            text-decoration: none;
-        }
-
-        .mininav-links a:hover {
-            color: #8759F2;
-        }
-
-        .mininav-div {
-            padding-top: 40px;
-            margin: 0 0 0 auto;
-            padding-right: 20px;
-            padding-top: 60px;
-            width: 100%;
-        }
-
-
-        .button {
-            display: inline-block;
-            font-size: 10px;
-            line-height: 50px;
-            text-align: end;
-            text-decoration: none;
-            cursor: pointer;
-            -moz-user-select: none;
-            -khtml-user-select: none;
-            -webkit-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-        }
-
-        .button:hover {
-            transition-duration: 0.4s;
-            -moz-transition-duration: 0.4s;
-            -webkit-transition-duration: 0.4s;
-            -o-transition-duration: 0.4s;
-        }
-
-        .search-container {
-            position: relative;
-            display: inline-block;
-            height: 50px;
-            width: 50px;
-            vertical-align: bottom;
-        }
-
-        .mglass {
-            display: inline-block;
-            pointer-events: none;
-        }
-
-        .searchbutton {
-            position: absolute;
-            font-size: 20px;
-            width: 100%;
-            margin: 0;
-            padding: 0;
-        }
-
-        .search:focus+.searchbutton {
-            transition-duration: 0.4s;
-            -moz-transition-duration: 0.4s;
-            -webkit-transition-duration: 0.4s;
-            -o-transition-duration: 0.4s;
-        }
-
-        .search {
-            position: absolute;
-            left: 49px;
-            outline: none;
-            border: none;
-            padding: 0;
-            width: 0;
-            height: 100%;
-            z-index: 10;
-            transition-duration: 0.4s;
-            -moz-transition-duration: 0.4s;
-            -webkit-transition-duration: 0.4s;
-            -o-transition-duration: 0.4s;
-        }
-
-        .search:focus {
-            border: 2px solid #8759F2;
-            border-radius: 10px;
-            width: 363px;
-            /* Bar width+1px */
-            padding: 0 16px 0 0;
-        }
-
-        .expandright {
-            left: auto;
-            right: 49px;
-        }
-
-        .expandright:focus {
-            padding-right: 10px;
-            padding-left: 10px;
-        }
-
-
-        .chart-div {
-            height: 100%;
-            border-radius: 15px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-        }
-
-        .notes-div {
-            margin-top: 50px;
-        }
-
-
-
-        h2 {
-            font-weight: bold;
-            font-size: 25px;
-            font-family: 'Poppins', sans-serif;
-        }
-
-        .notes-div ul,
-        .notes-div li {
-            list-style: none;
-        }
-
-        .notes-div ul {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .notes-div ul .notes-div li,
-        .notes-div a {
-            text-decoration: none;
-            color: #000;
-            background: #ffc;
-            display: block;
-            height: 17em;
-            width: 20em;
-            padding: 1em;
-            box-shadow: 5px 5px 7px rgba(33, 33, 33, .7);
-            transform: rotate(-5deg);
-            transition: transform .15s linear;
-        }
-
-        .notes-div ul,
-        .notes-div li {
-            margin: 1em;
-        }
-
-        .iq-card {
-            font-size: 15px;
-            height: 100%;
-            background-color: #fff;
-            border-radius: 15px;
-            padding: 40px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-        }
-
-        .iq-timeline {
-
-            margin: 0 0 0 5px;
-            padding: 0;
-            width: 100%;
-            border-left: 3px solid #f2edff;
-        }
-
-        .iq-timeline li {
-            margin-left: 15px;
-            position: relative;
-            padding: 15px 15px 0 5px;
-            list-style-type: none;
-        }
-
-        .iq-timeline li .timeline-dots {
-            position: absolute;
-
-            top: 20px;
-            left: -24px;
-            border: 3px solid #0084ff;
-            border-radius: 90px;
-            padding: 5px;
-            background: #fff;
-        }
-
-        .progress {
-            margin: 0 0 0 auto;
-            margin-top: 30px;
-        }
-
-        .project-name {
-            margin: 0 0 0 auto;
-            margin-top: 19px;
-            font-size: 20px;
-        }
-    </style>
-</head>
-
-<body>
-
-    <div class="sidebar close" style="margin-top: 25px;">
-        <div class="logo-details">
-            <i class='logo-pic'><img src="images/cLogo.png" style="height: 30px"></i>
-            <span class="logo_name" style="color: #4D4D4D; font-size: 30px;">Collab</span>
-        </div>
-        <ul class="nav-links">
-            <li>
-                <a href="#" style="border-left: 3px solid #8759F2;">
-                    <i class='bx bx-grid-alt' style="color: #8759F2;"></i>
-                    <span class="link_name" style="color: #8759F2;">Dashboard</span>
-                </a>
-                <ul class="sub-menu blank">
-                    <li><a class="link_name" href="dashboard.html">Dashboard</a></li>
-                </ul>
-            </li>
-            <li>
-                <div class="iocn-link">
-                    <a href="#">
-                        <i class='bx bx-user'></i>
-                        <span class="link_name">Community</span>
-                    </a>
-                    <i class='bx bxs-chevron-down arrow'></i>
-                </div>
-                <ul class="sub-menu">
-                    <li><a class="link_name">Community</a></li>
-                    <li><a href="feed.html">Feed</a></li>
-                    <li><a href="profile.html">Profile</a></li>
-                    <li><a href="messeges.html">Messages</a></li>
-                    <li><a href="teams.html">Teams</a></li>
-                    <li><a href="userslist.html">Users</a></li>
-                </ul>
-            </li>
-            <li>
-                <div class="iocn-link">
-                    <a href="#">
-                        <i class='bx bx-book-alt'></i>
-                        <span class="link_name">Management</span>
-                    </a>
-                    <i class='bx bxs-chevron-down arrow'></i>
-                </div>
-                <ul class="sub-menu">
-                    <li><a class="link_name">Management</a></li>
-                    <li><a href="calendar.html">Calendar</a></li>
-                    <li><a href="todolist.html">Tasks</a></li>
-                    <li><a href="projects.html">Projects</a></li>
-                </ul>
-            </li>
-
-            <li>
-                <a href="#">
-                    <i class='bx bx-line-chart'></i>
-                    <span class="link_name">Analytics</span>
-                </a>
-                <ul class="sub-menu blank">
-                    <li><a class="link_name" href="#">Analytics</a></li>
-                </ul>
-            </li>
-
-            <li>
-                <a href="#">
-                    <i class='bx bx-cog'></i>
-                    <span class="link_name">Settings</span>
-                </a>
-                <ul class="sub-menu blank">
-                    <li><a class="link_name" href="#">Settings</a></li>
-                </ul>
-            </li>
-
-            <li>
-
-
-                <div class="profile-details">
-                    <i class='bx bx-log-out'></i>
-                </div>
-
-            </li>
-
-        </ul>
-    </div>
-    <section class="home-section">
-        <div class="home-content" style="margin-bottom: 70px; ">
-            <i class='bx bx-menu'></i>
-            <div class="mininav-div">
-
-                <ul class="mininav-links" style="width: 100%; margin: 0 auto; ">
-                    <span class="text" style="padding: 15px; margin: 0 auto 0 0;">Hello, Ahmad.</span>
-
-                    <li><a href="#">
-                            <div class="search-container">
-                                <form action="/search" method="get">
-                                    <input class="search expandright" id="searchright" type="search" name="q"
-                                        placeholder="Search">
-                                    <label class="button searchbutton" for="searchright"><span class="mglass"><i
-                                                class='bx bx-search'></i></span></label>
-                                </form>
-                            </div>
-                        </a>
-                    </li>
-                    <li><a href="#"><i class='bx bx-bell'></i></a></li>
-                    <li><a href="#"><i class='bx bx-expand'></i></a></li>
-                    <li><a href="#"> <img src="images/Avatar.png"
-                                style="height: 50px; border-radius: 50%; border: 2px solid #4d4d4d;"></a></li>
-                    <li class="nav-item">
-                        <a href="/api/users/logout" class="nav-link active">Logout</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-
-
-
-
-        <div>
-
-
-            <div class="container">
-                <div class="row">
-
-                    <div class="col-8" style="height: 100%;">
-                        <div class="chart-div">
-                            <div class="iq-card iq-card-block iq-card-stretch iq-card-height overflow-hidden wow fadeInUp"
-                                data-wow-delay="0.6s">
-                                <div class="iq-card-header d-flex justify-content-between">
-                                    <div class="iq-header-title">
-                                        <h4 class="card-title">Productivity</h4>
-                                    </div>
-                                    <div class="iq-card-header-toolbar d-flex align-items-center">
-                                        <ul class="nav nav-pills">
-                                            <li class="nav-item">
-                                                <a href="#" class="nav-link active">All Time</a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a href="#" class="nav-link">This Year</a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a href="#" class="nav-link">This Week</a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a href="#" class="nav-link">Today</a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="iq-card-body p-0">
-
-                                    <div id="chart-11"></div>
-                                </div>
-                            </div>
-
-
-                        </div>
-                    </div>
-
-                    <div class="col">
-                        <div class="iq-card">
-                            <div class="iq-card-header d-flex justify-content-between">
-                                <div class="iq-header-title">
-                                    <h4 class="card-title">Today's Timeline</h4>
-                                </div>
-                                <div class="iq-card-header-toolbar d-flex align-items-center">
-                                    <div class="dropdown">
-                                        <span class="dropdown-toggle text-primary" id="dropdownMenuButton4"
-                                            data-toggle="dropdown">
-                                            View All
-                                        </span>
-                                        <div class="dropdown-menu dropdown-menu-right"
-                                            aria-labelledby="dropdownMenuButton">
-                                            <a class="dropdown-item" href="#"><i class="ri-eye-fill mr-2"></i>View</a>
-                                            <a class="dropdown-item" href="#"><i
-                                                    class="ri-delete-bin-6-fill mr-2"></i>Delete</a>
-                                            <a class="dropdown-item" href="#"><i
-                                                    class="ri-pencil-fill mr-2"></i>Edit</a>
-                                            <a class="dropdown-item" href="#"><i
-                                                    class="ri-printer-fill mr-2"></i>Print</a>
-                                            <a class="dropdown-item" href="#"><i
-                                                    class="ri-file-download-fill mr-2"></i>Download</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="iq-card-body">
-                                <ul class="iq-timeline">
-                                    <li>
-                                        <div class="timeline-dots"></div>
-                                        <h6 class="float-left mb-1">Lorem Ipsum</h6>
-                                        <small class="float-right mt-1">24 Nov 2021</small>
-                                        <div class="d-inline-block w-100">
-                                            <p>Bonbon macaroon jelly beans gummi bears jelly lollipop apple</p>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="timeline-dots border-success"></div>
-                                        <h6 class="float-left mb-1">Lorem Ipsum</h6>
-                                        <small class="float-right mt-1">24 Nov 2021</small>
-                                        <div class="d-inline-block w-100">
-                                            <p>Bonbon macaroon jelly beans gummi bears jelly lollipop apple</p>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="timeline-dots border-danger"></div>
-                                        <h6 class="float-left mb-1">Lorem Ipsum</h6>
-                                        <small class="float-right mt-1">24 Nov 2021</small>
-                                        <div class="d-inline-block w-100">
-                                            <p>Bonbon macaroon jelly beans gummi bears gummi bears jelly lollipop apple
-                                            </p>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="timeline-dots border-primary"></div>
-                                        <h6 class="float-left mb-1">Lorem Ipsum</h6>
-                                        <small class="float-right mt-1">24 Nov 2021</small>
-                                        <div class="d-inline-block w-100">
-                                            <p>Bonbon macaroon jelly beans gummi bears jelly lollipop apple</p>
-                                        </div>
-                                    </li>
-
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
+<%- include('../partials/header') %>
+    <div>
         <div class="container">
             <div class="row">
-                <div class="col-8">
-                    <div class="iq-card iq-card-block iq-card-stretch iq-card-height overflow-hidden wow fadeInUp"
-                        data-wow-delay="0.6s">
-                        <div class="iq-header-title">
-                            <h4 class="card-title">Projects Progress</h4>
-                        </div>
-                        <div class="container">
-                            <div class="row">
-                                <div class="col">
-                                    <div class="project-name">
-                                        <span>Project 1</span>
-                                    </div>
-                                    <div class="project-name">
-                                        <span>Project 2</span>
-                                    </div>
-                                    <div class="project-name">
-                                        <span>Project 3</span>
-                                    </div>
-                                    <div class="project-name">
-                                        <span>Project 4</span>
-                                    </div>
+
+                <div class="col-8" style="height: 100%;">
+                    <div class="chart-div">
+                        <div class="iq-card iq-card-block iq-card-stretch iq-card-height overflow-hidden wow fadeInUp"
+                            data-wow-delay="0.6s">
+                            <div class="iq-card-header d-flex justify-content-between">
+                                <div class="iq-header-title">
+                                    <h4 class="card-title">Productivity</h4>
                                 </div>
-                                <div class="col-10">
-                                    <div class="progress">
-                                        <div class="progress-bar progress-bar-striped" role="progressbar"
-                                            style="width: 10%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100">
-                                        </div>
-                                    </div>
-                                    <div class="progress">
-                                        <div class="progress-bar progress-bar-striped bg-success" role="progressbar"
-                                            style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
-                                        </div>
-                                    </div>
-                                    <div class="progress">
-                                        <div class="progress-bar progress-bar-striped bg-info" role="progressbar"
-                                            style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">
-                                        </div>
-                                    </div>
-                                    <div class="progress">
-                                        <div class="progress-bar progress-bar-striped bg-warning" role="progressbar"
-                                            style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
-                                        </div>
+                                <div class="iq-card-header-toolbar d-flex align-items-center">
+                                    <ul class="nav nav-pills">
+                                        <li class="nav-item">
+                                            <a href="#" class="nav-link active">All Time</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="#" class="nav-link">This Year</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="#" class="nav-link">This Week</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="#" class="nav-link">Today</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="iq-card-body p-0">
+
+                                <div id="chart-11"></div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="iq-card">
+                        <div class="iq-card-header d-flex justify-content-between">
+                            <div class="iq-header-title">
+                                <h4 class="card-title">Today's Timeline</h4>
+                            </div>
+                            <div class="iq-card-header-toolbar d-flex align-items-center">
+                                <div class="dropdown">
+                                    <span class="dropdown-toggle text-primary" id="dropdownMenuButton4"
+                                        data-toggle="dropdown">
+                                        View All
+                                    </span>
+                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                                        <a class="dropdown-item" href="#"><i class="ri-eye-fill mr-2"></i>View</a>
+                                        <a class="dropdown-item" href="#"><i
+                                                class="ri-delete-bin-6-fill mr-2"></i>Delete</a>
+                                        <a class="dropdown-item" href="#"><i class="ri-pencil-fill mr-2"></i>Edit</a>
+                                        <a class="dropdown-item" href="#"><i class="ri-printer-fill mr-2"></i>Print</a>
+                                        <a class="dropdown-item" href="#"><i
+                                                class="ri-file-download-fill mr-2"></i>Download</a>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        <div class="iq-card-body">
+                            <ul class="iq-timeline">
+                                <li>
+                                    <div class="timeline-dots"></div>
+                                    <h6 class="float-left mb-1">Lorem Ipsum</h6>
+                                    <small class="float-right mt-1">24 Nov 2021</small>
+                                    <div class="d-inline-block w-100">
+                                        <p>Bonbon macaroon jelly beans gummi bears jelly lollipop apple</p>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="timeline-dots border-success"></div>
+                                    <h6 class="float-left mb-1">Lorem Ipsum</h6>
+                                    <small class="float-right mt-1">24 Nov 2021</small>
+                                    <div class="d-inline-block w-100">
+                                        <p>Bonbon macaroon jelly beans gummi bears jelly lollipop apple</p>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="timeline-dots border-danger"></div>
+                                    <h6 class="float-left mb-1">Lorem Ipsum</h6>
+                                    <small class="float-right mt-1">24 Nov 2021</small>
+                                    <div class="d-inline-block w-100">
+                                        <p>Bonbon macaroon jelly beans gummi bears gummi bears jelly lollipop apple
+                                        </p>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="timeline-dots border-primary"></div>
+                                    <h6 class="float-left mb-1">Lorem Ipsum</h6>
+                                    <small class="float-right mt-1">24 Nov 2021</small>
+                                    <div class="d-inline-block w-100">
+                                        <p>Bonbon macaroon jelly beans gummi bears jelly lollipop apple</p>
+                                    </div>
+                                </li>
 
+                            </ul>
+                        </div>
                     </div>
                 </div>
-                <div class="col">
-                    <ul class="notes-div">
-                        <li>
-                            <a href="#" contenteditable>
-                                <h2>Sticky Note:</h2>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
+
             </div>
 
         </div>
+
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-8">
+                <div class="iq-card iq-card-block iq-card-stretch iq-card-height overflow-hidden wow fadeInUp"
+                    data-wow-delay="0.6s">
+                    <div class="iq-header-title">
+                        <h4 class="card-title">Projects Progress</h4>
+                    </div>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col">
+                                <div class="project-name">
+                                    <span>Project 1</span>
+                                </div>
+                                <div class="project-name">
+                                    <span>Project 2</span>
+                                </div>
+                                <div class="project-name">
+                                    <span>Project 3</span>
+                                </div>
+                                <div class="project-name">
+                                    <span>Project 4</span>
+                                </div>
+                            </div>
+                            <div class="col-10">
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar-striped" role="progressbar" style="width: 10%"
+                                        aria-valuenow="10" aria-valuemin="0" aria-valuemax="100">
+                                    </div>
+                                </div>
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar-striped bg-success" role="progressbar"
+                                        style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+                                    </div>
+                                </div>
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar-striped bg-info" role="progressbar"
+                                        style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">
+                                    </div>
+                                </div>
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar-striped bg-warning" role="progressbar"
+                                        style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col">
+                <ul class="notes-div">
+                    <li>
+                        <a href="#" contenteditable>
+                            <h2>Sticky Note:</h2>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
 
 
 
@@ -849,36 +226,36 @@
 
 
     </script>
-    <script src="js/jquery.min.js"></script>
-    <script src="js/popper.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
+    <script src="<%=process.env.BASE_URL%>/js/jquery.min.js"></script>
+    <script src="<%=process.env.BASE_URL%>/js/popper.min.js"></script>
+    <script src="<%=process.env.BASE_URL%>/js/bootstrap.min.js"></script>
     <!-- Appear JavaScript -->
-    <script src="js/jquery.appear.js"></script>
+    <script src="<%=process.env.BASE_URL%>/js/jquery.appear.js"></script>
     <!-- Countdown JavaScript -->
-    <script src="js/countdown.min.js"></script>
+    <script src="<%=process.env.BASE_URL%>/js/countdown.min.js"></script>
     <!-- Counterup JavaScript -->
-    <script src="js/waypoints.min.js"></script>
-    <script src="js/jquery.counterup.min.js"></script>
+    <script src="<%=process.env.BASE_URL%>/js/waypoints.min.js"></script>
+    <script src="<%=process.env.BASE_URL%>/js/jquery.counterup.min.js"></script>
     <!-- Wow JavaScript -->
-    <script src="js/wow.min.js"></script>
+    <script src="<%=process.env.BASE_URL%>/js/wow.min.js"></script>
     <!-- Apexcharts JavaScript -->
-    <script src="js/apexcharts.js"></script>
+    <script src="<%=process.env.BASE_URL%>/js/apexcharts.js"></script>
     <!-- Slick JavaScript -->
-    <script src="js/slick.min.js"></script>
+    <script src="<%=process.env.BASE_URL%>/js/slick.min.js"></script>
     <!-- Select2 JavaScript -->
-    <script src="js/select2.min.js"></script>
+    <script src="<%=process.env.BASE_URL%>/js/select2.min.js"></script>
     <!-- Owl Carousel JavaScript -->
-    <script src="js/owl.carousel.min.js"></script>
+    <script src="<%=process.env.BASE_URL%>/js/owl.carousel.min.js"></script>
     <!-- Magnific Popup JavaScript -->
-    <script src="js/jquery.magnific-popup.min.js"></script>
+    <script src="<%=process.env.BASE_URL%>/js/jquery.magnific-popup.min.js"></script>
     <!-- Smooth Scrollbar JavaScript -->
-    <script src="js/smooth-scrollbar.js"></script>
+    <script src="<%=process.env.BASE_URL%>/js/smooth-scrollbar.js"></script>
     <!-- lottie JavaScript -->
-    <script src="js/lottie.js"></script>
+    <script src="<%=process.env.BASE_URL%>/js/lottie.js"></script>
     <!-- Chart Custom JavaScript -->
-    <script src="js/chart-custom.js"></script>
+    <script src="<%=process.env.BASE_URL%>/js/chart-custom.js"></script>
     <!-- Custom JavaScript -->
-    <script src="js/custom.js"></script>
-</body>
+    <script src="<%=process.env.BASE_URL%>/js/custom.js"></script>
+    </body>
 
-</html>
+    </html>

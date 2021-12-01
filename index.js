@@ -31,7 +31,8 @@ app.get("/", isLogged, async (req, res) => {
 });
 
 app.get("/dashboard", isLogged, async (req, res) => {
-    res.render("pages/dashboard");
+    console.log(req.user);
+    res.render("pages/dashboard", { user: req.user });
 });
 
 app.get("/secret", async (req, res) => {

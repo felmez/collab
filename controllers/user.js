@@ -9,7 +9,7 @@ const getUsers = async (req, res) => {
     const users = await userModel.find({});
 
     if (users.length > 0) {
-        res.render("dashboard/users", { users: users });
+        res.render("pages/users", { users: users, user: req.user });
     } else {
         res.status(404).json('no users found');
     }
@@ -143,9 +143,11 @@ const login = async (req, res) => {
 
     const userInToken = {
         id: existUser._id,
+        name: existUser.name,
         username: existUser.username,
         email: existUser.email,
-        role: existUser.role
+        role: existUser.role,
+        picture: existUser.picture
     };
 
     const token = jwt.sign(userInToken, SECRET_KEY, {

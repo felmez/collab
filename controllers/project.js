@@ -4,8 +4,7 @@ const getProjects = async (req, res) => {
     const projects = await projectModel.find({});
 
     if (projects.length > 0) {
-        res.status(200).json(projects);
-        // res.render("dashboard/users", { users: users });
+        res.render("pages/projects", { projects: projects });
     } else {
         res.status(404).json('no projects found');
     }
