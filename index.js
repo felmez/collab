@@ -31,8 +31,16 @@ app.get("/", isLogged, async (req, res) => {
 });
 
 app.get("/dashboard", isLogged, async (req, res) => {
+    if (req.user.firstLogin == true) {
+        res.redirect('/settings');
+    } else {
+        res.render("pages/dashboard", { user: req.user });
+    }
     console.log(req.user);
-    res.render("pages/dashboard", { user: req.user });
+});
+
+app.get("/settings", isLogged, async (req, res) => {
+    res.render("pages/settings", { user: req.user });
 });
 
 app.get("/secret", async (req, res) => {

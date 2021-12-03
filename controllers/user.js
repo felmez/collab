@@ -1,8 +1,18 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const nodemailer = require('nodemailer');
 
 const userModel = require("../models/user");
 const { SECRET_KEY } = require('../middleware/isLogged');
+
+const transporter = nodemailer.createTransport({
+    host: 'smtp.gmail.com',
+    port: 465,
+    auth: {
+        user: 'collabplatformio@gmail.com',
+        pass: '12345678@B'
+    }
+});
 
 
 const getUsers = async (req, res) => {
@@ -16,6 +26,14 @@ const createUser = async (req, res) => {
     const users = await userModel.find({});
 
     try {
+
+        const existUser = await userModel.findOne({ $or: [{ username: username }, { email: email }] });
+
+        // check if user unique
+        if (existUser) {
+            return res.status(400).render("pages/users", { user: req.user, users: users, error: 'username / email is already used' });
+        }
+
         const user = new userModel({
             username: username,
             name: name,
@@ -26,7 +44,28 @@ const createUser = async (req, res) => {
             phone: phone
         });
 
+
         await user.save();
+
+        const mailOptions = {
+            from: 'collabplatformio@gmail.com',
+            to: email,
+            subject: 'Your account created successfully',
+            text: `You can login the to platform by the information below: \n
+                    Login URL: http://localhost:3000
+                    Email: ${email} \n
+                    Password: 1234 \n
+                    Don't forget to change your password as soon as possible. \n
+                    Thank you for using Collab.`
+        };
+
+        transporter.sendMail(mailOptions, function (error, info) {
+            if (error) {
+                console.log(error);
+            } else {
+                console.log(info.response);
+            }
+        });
 
         if (user._id) {
             res.redirect("/api/users");
@@ -148,7 +187,9 @@ const login = async (req, res) => {
         username: existUser.username,
         email: existUser.email,
         role: existUser.role,
-        picture: existUser.picture
+        picture: existUser.picture,
+        firstLogin: existUser.firstLogin,
+        doneTour: existUser.doneTour
     };
 
     const token = jwt.sign(userInToken, SECRET_KEY, {
@@ -166,6 +207,29 @@ const logout = async (req, res) => {
     return res.clearCookie('token').status(400).render('pages/login');
 };
 
+const changePassword = async (req, res) => {
+    const { password, confirmPassword } = req.body;
+
+    const loggedUser = req.user;
+
+    if (password !== confirmPassword) {
+        return res.status(400).render('pages/settings', { error: 'passwords does not match', user: loggedUser });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    await userModel.updateOne({ username: loggedUser.username }, {
+        $set: {
+            password: hashedPassword,
+            firstLogin: false
+        }
+    }, { new: true }).then(() => {
+        return res.clearCookie('token').status(400).render('pages/login');
+    }).catch(() => {
+        res.render("pages/settings", { error: 'could not update password', user: loggedUser });
+    });
+};
+
 module.exports = {
     getUsers,
     createUser,
@@ -173,5 +237,6 @@ module.exports = {
     updateUser,
     registerAdmin,
     login,
-    logout
+    logout,
+    changePassword
 };

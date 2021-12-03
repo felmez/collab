@@ -38,6 +38,14 @@ const User = new mongoose.Schema({
     title: {
         type: String,
         default: ''
+    },
+    firstLogin: {
+        type: Boolean,
+        default: true,
+    },
+    doneTour: {
+        type: Boolean,
+        default: false,
     }
 });
 
