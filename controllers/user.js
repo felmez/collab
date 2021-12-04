@@ -230,6 +230,20 @@ const changePassword = async (req, res) => {
     });
 };
 
+const changeTourStatus = async (req, res) => {
+    const loggedUser = req.user;
+
+    await userModel.updateOne({ username: loggedUser.username }, {
+        $set: {
+            doneTour: true
+        }
+    }, { new: true }).then(() => {
+        return res.json('status changed perfectly');
+    }).catch(() => {
+        res.render("pages/dashboard", { error: 'something happened', user: loggedUser });
+    });
+};
+
 module.exports = {
     getUsers,
     createUser,
@@ -238,5 +252,6 @@ module.exports = {
     registerAdmin,
     login,
     logout,
-    changePassword
+    changePassword,
+    changeTourStatus
 };

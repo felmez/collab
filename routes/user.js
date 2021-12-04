@@ -14,5 +14,6 @@ router.delete("/delete/:id", isAdmin, userController.deleteUser);
 router.post("/login", userController.login);
 router.get("/logout", userController.logout);
 router.post("/changePassword", isLogged, userController.changePassword);
+router.post("/changeTourStatus", isLogged, userController.changeTourStatus);
 
 module.exports = router;

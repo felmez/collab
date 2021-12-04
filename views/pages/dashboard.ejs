@@ -1,4 +1,6 @@
 <%- include('../partials/header') %>
+    <link rel="stylesheet" href="<%=process.env.BASE_URL%>/shepherd.css" />
+
     <div>
         <div class="container">
             <div class="row">
@@ -171,10 +173,197 @@
         </div>
 
     </div>
-
-
-
-
     </section>
 
-    <%- include('../partials/footer') %>
+
+    <script src="<%=process.env.BASE_URL%>/shepherd.min-new.js"></script>
+
+    <script>
+        const tour = new Shepherd.Tour({
+            defaultStepOptions: {
+                cancelIcon: {
+                    enabled: true
+                },
+                classes: 'class-1 class-2',
+                scrollTo: { behavior: 'smooth', block: 'center' }
+            }
+        });
+
+        tour.addStep({
+            title: 'Welcome to Collab',
+            text: ``,
+            attachTo: {
+                element: '.logo-pic',
+                on: 'bottom'
+            },
+            buttons: [
+                {
+                    action() {
+                        return this.back();
+                    },
+                    classes: 'shepherd-button-secondary',
+                    text: 'Back'
+                },
+                {
+                    action() {
+                        return this.next();
+                    },
+                    text: 'Next'
+                }
+            ],
+            id: 'creating'
+        });
+
+        tour.addStep({
+            title: 'Here you can manage your community',
+            text: ``,
+            attachTo: {
+                element: '.community',
+                on: 'bottom'
+            },
+            buttons: [
+                {
+                    action() {
+                        return this.back();
+                    },
+                    classes: 'shepherd-button-secondary',
+                    text: 'Back'
+                },
+                {
+                    action() {
+                        return this.next();
+                    },
+                    text: 'Next'
+                }
+            ],
+            id: 'creating'
+        });
+
+        tour.addStep({
+            title: 'Here you can manage your tasks and companies',
+            text: ``,
+            attachTo: {
+                element: '.management',
+                on: 'bottom'
+            },
+            buttons: [
+                {
+                    action() {
+                        return this.back();
+                    },
+                    classes: 'shepherd-button-secondary',
+                    text: 'Back'
+                },
+                {
+                    action() {
+                        return this.next();
+                    },
+                    text: 'Next'
+                }
+            ],
+            id: 'creating'
+        });
+
+        tour.addStep({
+            title: 'Find your settings page here',
+            text: ``,
+            attachTo: {
+                element: '.settings',
+                on: 'bottom'
+            },
+            buttons: [
+                {
+                    action() {
+                        return this.back();
+                    },
+                    classes: 'shepherd-button-secondary',
+                    text: 'Back'
+                },
+                {
+                    action() {
+                        return this.next();
+                    },
+                    text: 'Next'
+                }
+            ],
+            id: 'creating'
+        });
+
+        tour.addStep({
+            title: 'Your profile is here',
+            text: ``,
+            attachTo: {
+                element: '.profile',
+                on: 'bottom'
+            },
+            buttons: [
+                {
+                    action() {
+                        return this.back();
+                    },
+                    classes: 'shepherd-button-secondary',
+                    text: 'Back'
+                },
+                {
+                    action() {
+                        return this.next();
+                    },
+                    text: 'Next'
+                }
+            ],
+            id: 'creating'
+        });
+
+        tour.addStep({
+            title: 'Finally you can logout by clicking here',
+            text: ``,
+            attachTo: {
+                element: '.logout',
+                on: 'bottom'
+            },
+            buttons: [
+                {
+                    action() {
+                        return this.back();
+                    },
+                    classes: 'shepherd-button-secondary',
+                    text: 'Back'
+                },
+                {
+                    action() {
+                        changeTour()
+                        return this.complete();
+                    },
+                    text: 'Done'
+                }
+            ],
+            id: 'creating'
+        });
+
+
+    </script>
+
+    <% if (locals.user.doneTour==false) { %>
+        <script>
+            tour.start();
+        </script>
+
+
+        <script>
+            function changeTour() {
+                $.ajax({
+                    url: `http://localhost:3000/api/users/changeTourStatus`,
+                    type: 'POST',
+                    success: function (result) {
+                        console.log(result)
+                    },
+                    error: function (result) {
+                        console.log(result.responseText)
+                    },
+                });
+            }
+        </script>
+
+        <% } %>
+
+            <%- include('../partials/footer') %>
