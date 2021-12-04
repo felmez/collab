@@ -564,7 +564,10 @@
                             <li><a href="/profile">Profile</a></li>
                             <li><a href="/message">Messages</a></li>
                             <li><a href="/api/teams">Teams</a></li>
-                            <li><a href="/api/users/">Users</a></li>
+                            <% if (user.role=='admin' ) { %>
+                                <li><a href="/api/users/">Users</a></li>
+                                <% } %>
+
                         </ul>
                     </li>
                     <li>
