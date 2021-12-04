@@ -352,7 +352,7 @@
         <script>
             function changeTour() {
                 $.ajax({
-                    url: `${process.env.BASE_URL}/api/users/changeTourStatus`,
+                    url: `<%= process.env.BASE_URL %>/api/users/changeTourStatus`,
                     type: 'POST',
                     success: function (result) {
                         console.log(result)
