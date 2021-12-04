@@ -1,7 +1,7 @@
 const projectModel = require("../models/project");
 
 const getProjects = async (req, res) => {
-    const projects = await projectModel.find({});
+    const projects = await projectModel.find({ company: req.user.company });
     res.render("pages/projects", { projects: projects, user: req.user });
 };
 
@@ -15,6 +15,7 @@ const createProject = async (req, res) => {
             title: title,
             user: user,
             tasks: tasks,
+            company: req.user.company
         });
 
         await project.save();

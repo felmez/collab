@@ -15,6 +15,10 @@ const Task = new mongoose.Schema({
     status: {
         type: String,
         default: 'Pending'
+    },
+    company: {
+        type: String,
+        required: true
     }
 });
 

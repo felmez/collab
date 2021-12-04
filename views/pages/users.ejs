@@ -30,6 +30,7 @@
                                         <th>Picture</th>
                                         <th>Username</th>
                                         <th>Role</th>
+                                        <th>Company</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -43,6 +44,8 @@
                                             <td><input type="text" name="picture" /></td>
                                             <td><input type="text" name="username" /></td>
                                             <td><input type="text" name="role" /></td>
+                                            <td><input type="text" name="company" value="<%= user.company %>"
+                                                    disabled /></td>
                                             <td> <span><button type="submit"
                                                         class="btn btn-success btn-rounded btn-sm my-0">Create
                                                         New</button></span>
@@ -72,6 +75,10 @@
                                                 </td>
                                                 <td>
                                                     <input type="text" name="role" value="<%= user.role %>" />
+                                                </td>
+                                                <td>
+                                                    <input type="text" name="company" value="<%= user.company %>"
+                                                        disabled />
                                                 </td>
                                                 <td>
                                                     <button type="submit"

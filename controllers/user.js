@@ -17,14 +17,14 @@ const transporter = nodemailer.createTransport({
 
 
 const getUsers = async (req, res) => {
-    const users = await userModel.find({});
+    const users = await userModel.find({ company: req.user.company });
     res.render("pages/users", { users: users, user: req.user });
 };
 
 const createUser = async (req, res) => {
     const { username, name, email, title, role, picture, phone } = req.body;
 
-    const users = await userModel.find({});
+    const users = await userModel.find({ company: req.user.company });
 
     try {
 
@@ -42,37 +42,36 @@ const createUser = async (req, res) => {
             title: title,
             role: role,
             picture: picture,
-            phone: phone
+            phone: phone,
+            company: req.user.company
         });
-
-
-        await user.save();
 
         const mailOptions = {
             from: 'collabplatformio@gmail.com',
             to: email,
             subject: 'Your account created successfully',
             text: `You can login the to platform by the information below: \n
-                    Login URL: http://localhost:3000
-                    Email: ${email} \n
-                    Password: 1234 \n
-                    Don't forget to change your password as soon as possible. \n
-                    Thank you for using Collab.`
+            Login URL: http://localhost:3000
+            Email: ${email} \n
+            Password: 1234 \n
+            Don't forget to change your password as soon as possible. \n
+            Thank you for using Collab.`
         };
 
-        transporter.sendMail(mailOptions, function (error, info) {
-            if (error) {
-                console.log(error);
-            } else {
-                console.log(info.response);
-            }
+        await user.save().then(() => {
+            console.log('its done here', user);
+            transporter.sendMail(mailOptions, function (error, info) {
+                if (error) {
+                    console.log(error);
+                } else {
+                    console.log(info.response);
+                }
+            });
+            res.redirect("/api/users");
+        }).catch(() => {
+            res.render("pages/users", { error: 'could not create user', user: req.user, users: users });
         });
 
-        if (user._id) {
-            res.redirect("/api/users");
-        } else {
-            res.render("pages/users", { error: 'could not create user', user: req.user, users: users });
-        }
     } catch (error) {
         res.render("pages/users", { error: error, user: req.user, users: users });
     }

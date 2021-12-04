@@ -1,7 +1,7 @@
 const teamModel = require("../models/team");
 
 const getTeams = async (req, res) => {
-    const teams = await teamModel.find({});
+    const teams = await teamModel.find({ company: req.user.company });
     res.render("pages/teams", { teams: teams, user: req.user });
 };
 
@@ -15,6 +15,7 @@ const createTeam = async (req, res) => {
             title: title,
             description: description,
             users: users,
+            company: req.user.company
         });
 
         await team.save();

@@ -1,7 +1,7 @@
 const companyModel = require("../models/company");
 
 const getCompanies = async (req, res) => {
-    const companies = await companyModel.find({});
+    const companies = await companyModel.find({ admin: req.user.username });
     res.render("pages/companies", { companies: companies, user: req.user });
 };
 

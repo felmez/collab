@@ -10,6 +10,10 @@ const Team = new mongoose.Schema({
     },
     users: {
         type: [String]
+    },
+    company: {
+        type: String,
+        required: true
     }
 });
 

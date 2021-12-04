@@ -12,6 +12,10 @@ const Project = new mongoose.Schema({
     tasks: {
         type: Array,
         default: []
+    },
+    company: {
+        type: String,
+        required: true
     }
 });
 
