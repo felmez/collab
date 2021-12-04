@@ -46,6 +46,10 @@ const User = new mongoose.Schema({
     doneTour: {
         type: Boolean,
         default: false,
+    },
+    company: {
+        type: String,
+        required: true
     }
 });
 

@@ -12,6 +12,14 @@ const Company = new mongoose.Schema({
     businessField: {
         type: String,
         required: true
+    },
+    admin: {
+        type: String,
+        required: true
+    },
+    image: {
+        type: String,
+        default: ''
     }
 });
 

@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
 
 const userModel = require("../models/user");
+const companyModel = require("../models/company");
 const { SECRET_KEY } = require('../middleware/isLogged');
 
 const transporter = nodemailer.createTransport({
@@ -126,7 +127,7 @@ const updateUser = async (req, res) => {
 };
 
 const registerAdmin = async (req, res) => {
-    const { username, email, role, password, confirmPassword } = req.body;
+    const { username, email, role, password, confirmPassword, companyName, numberOfEmployees, companyImage, businessField } = req.body;
 
     try {
         const existUser = await userModel.findOne({ $or: [{ username: username }, { email: email }] });
@@ -153,9 +154,27 @@ const registerAdmin = async (req, res) => {
             email,
             role,
             password: hashedPassword,
+            company: companyName
         });
 
-        await user.save();
+        const company = new companyModel({
+            name: companyName,
+            businessField: businessField,
+            image: companyImage,
+            numberOfEmployees: numberOfEmployees,
+            admin: user.username
+        });
+
+
+        await company.save().then(async () => {
+            await user.save().catch((err) => {
+                console.log(err);
+            });
+        }).catch((err) => {
+            console.log(err);
+        });
+        console.log(user);
+        console.log(company);
 
         res.status(201).redirect('/');
 
@@ -189,7 +208,8 @@ const login = async (req, res) => {
         role: existUser.role,
         picture: existUser.picture,
         firstLogin: existUser.firstLogin,
-        doneTour: existUser.doneTour
+        doneTour: existUser.doneTour,
+        company: existUser.company
     };
 
     const token = jwt.sign(userInToken, SECRET_KEY, {

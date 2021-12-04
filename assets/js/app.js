@@ -1,30 +1,3 @@
-/*
-Template: SocialV - Responsive Bootstrap 4 Admin Dashboard Template
-Author: iqonicthemes.in
-Design and Developed by: iqonicthemes.in
-NOTE: This file contains the styling for responsive Template.
-*/
-
-/*----------------------------------------------
-Index Of Script
-------------------------------------------------
-
-:: Tooltip
-:: right-sidebar
-:: Scrollbar
-:: Sidebar main
-:: Search input
-:: chat
-:: todo
-:: page-loader
-:: Mailbox
-:: Editable Table
-
-
-------------------------------------------------
-Index Of Script
-----------------------------------------------*/
-
 (function(jQuery) {
 
   "use strict";
