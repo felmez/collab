@@ -67,6 +67,11 @@ app.get("/messages", async (req, res) => {
     res.render("pages/messages");
 });
 
+app.get("/analytics", isLogged, async (req, res) => {
+    res.render("pages/analytics", { user: req.user });
+});
+
+
 app.listen(port, () => {
     console.log(`Server listening on http://localhost:${port}`);
     connectToMongo();
