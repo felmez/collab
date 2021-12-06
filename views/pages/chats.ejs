@@ -1,182 +1,53 @@
-<!doctype html>
-<html lang="en">
-
-<head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Collab | Chats</title>
-    <!-- Favicon -->
-    <link rel="shortcut icon" href="<%=process.env.BASE_URL%>/images/cLogo.png" />
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="<%=process.env.BASE_URL%>/css/bootstrap.min.css">
-    <!-- Typography CSS -->
-    <link rel="stylesheet" href="<%=process.env.BASE_URL%>/css/typography.css">
-    <!-- Style CSS -->
-    <link rel="stylesheet" href="<%=process.env.BASE_URL%>/css/style.css">
-    <!-- Responsive CSS -->
-    <link rel="stylesheet" href="<%=process.env.BASE_URL%>/css/responsive.css">
-    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
-    <link rel="stylesheet" href="<%=process.env.BASE_URL%>/vendor/@fortawesome/fontawesome-free/css/all.min.css">
-</head>
-
-<body>
-    <!-- Wrapper Start -->
-    <div class="wrapper">
-        <!-- Sidebar  -->
-        <div class="iq-sidebar">
-            <div class="iq-sidebar-logo d-flex justify-content-between">
-                <a href="/">
-                    <img src="<%=process.env.BASE_URL%>/images/cLogo.png" class="img-fluid" alt="">
-                    <span>Collab</span>
-                </a>
-                <div class="iq-menu-bt align-self-center">
-                    <div class="wrapper-menu">
-                        <div class="line-menu half start"></div>
-                        <div class="line-menu"></div>
-                        <div class="line-menu half end"></div>
-                    </div>
-                </div>
-            </div>
-            <div id="sidebar-scrollbar">
-                <nav class="iq-sidebar-menu">
-                    <ul id="iq-sidebar-toggle" class="iq-menu">
-
-                        <li class=""><a href="/dashboard" class="iq-waves-effect"><i
-                                    class="ri-home-4-line"></i><span>Dashboard</span></a></li>
+<%- include('../partials/header') %>
+    <div id="content-page" class="content-page">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="iq-card">
+                        <div class="iq-card-body chat-page p-0">
+                            <div class="chat-data-block">
+                                <div class="row">
+                                    <div class="col-lg-3 chat-data-left scroller">
+                                        <div class="chat-search pt-3 pl-3">
+                                            <div class="d-flex align-items-center">
+                                                <div class="chat-profile mr-3">
+                                                    <img src="<%= user ? user.picture : '' %>" alt="chat-user"
+                                                        class="avatar-60 ">
+                                                </div>
+                                                <div class="chat-caption">
+                                                    <h5 class="mb-0">
+                                                        <%= user ? user.name : '' %>
+                                                    </h5>
+                                                    <p class="m-0">
+                                                        <%= user ? user.title : '' %>
+                                                    </p>
+                                                </div>
+                                                <button type="submit" class="close-btn-res p-3"><i
+                                                        class="ri-close-fill"></i></button>
+                                            </div>
 
 
-                        <li class="active"><a href="/chats" class="iq-waves-effect"><i
-                                    class="ri-message-line"></i><span>Chat</span></a></li>
-
-                    </ul>
-                    </li>
-                    </ul>
-                </nav>
-                <div class="p-3"></div>
-            </div>
-        </div>
-        <!-- TOP Nav Bar -->
-        <div class="iq-top-navbar">
-            <div class="iq-navbar-custom">
-                <div class="iq-sidebar-logo">
-                    <div class="top-logo">
-                        <a href="index.html" class="logo">
-                            <img src="<%=process.env.BASE_URL%>/images/logo.png" class="img-fluid" alt="">
-                            <span>Collab</span>
-                        </a>
-                    </div>
-                </div>
-                <div class="navbar-breadcrumb">
-                    <h5 class="mb-0">Chats</h5>
-                </div>
-                <nav class="navbar navbar-expand-lg navbar-light p-0">
-
-                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                        <ul class="navbar-nav ml-auto navbar-list">
-                        </ul>
-                    </div>
-                    <ul class="navbar-list">
-                        <li>
-                            <a href="#" class="search-toggle iq-waves-effect bg-primary text-white"><img
-                                    src="<%= user ? user.picture : '' %>" class="img-fluid rounded" alt="user"></a>
-                            <div class="iq-sub-dropdown iq-user-dropdown">
-                                <div class="iq-card shadow-none m-0">
-                                    <div class="iq-card-body p-0 ">
-                                        <div class="bg-primary p-3">
-                                            <h5 class="mb-0 text-white line-height">Hello <%= user ? user.name : '' %>
-                                            </h5>
-                                            <span class="text-white font-size-12">Available</span>
                                         </div>
-                                        <a href="/profile" class="iq-sub-card iq-bg-primary-hover">
-                                            <div class="media align-items-center">
-                                                <div class="rounded iq-card-icon iq-bg-primary">
-                                                    <i class="ri-file-user-line"></i>
-                                                </div>
-                                                <div class="media-body ml-3">
-                                                    <h6 class="mb-0 ">My Profile</h6>
-                                                    <p class="mb-0 font-size-12">View personal profile details.</p>
-                                                </div>
-                                            </div>
-                                        </a>
-
-                                        <a href="/settings" class="iq-sub-card iq-bg-primary-danger-hover">
-                                            <div class="media align-items-center">
-                                                <div class="rounded iq-card-icon iq-bg-danger">
-                                                    <i class="ri-account-box-line"></i>
-                                                </div>
-                                                <div class="media-body ml-3">
-                                                    <h6 class="mb-0 ">Account settings</h6>
-                                                    <p class="mb-0 font-size-12">Manage your account parameters.</p>
-                                                </div>
-                                            </div>
-                                        </a>
-
-                                        <div class="d-inline-block w-100 text-center p-3">
-                                            <a class="iq-bg-danger iq-sign-btn" href="/api/users/logout"
-                                                role="button">Logout<i class="ri-login-box-line ml-2"></i></a>
+                                        <div class="chat-sidebar-channel scroller mt-4 pl-3">
+                                            <h5 class="">Public Channels</h5>
+                                            <ul class="iq-chat-ui nav flex-column nav-pills">
+                                                <!-- </ul> -->
+                                                <h5 class="mt-3">Private Channels</h5>
+                                                <!-- <ul class="iq-chat-ui nav flex-column nav-pills"> -->
+                                                <!-- </ul> -->
+                                                <h5 class="mt-3">Direct Message</h5>
+                                            </ul>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
-        </div>
-        <!-- TOP Nav Bar END -->
-        <!-- Page Content  -->
-        <div id="content-page" class="content-page">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-sm-12">
-                        <div class="iq-card">
-                            <div class="iq-card-body chat-page p-0">
-                                <div class="chat-data-block">
-                                    <div class="row">
-                                        <div class="col-lg-3 chat-data-left scroller">
-                                            <div class="chat-search pt-3 pl-3">
-                                                <div class="d-flex align-items-center">
-                                                    <div class="chat-profile mr-3">
-                                                        <img src="<%= user ? user.picture : '' %>" alt="chat-user"
-                                                            class="avatar-60 ">
-                                                    </div>
-                                                    <div class="chat-caption">
-                                                        <h5 class="mb-0">
-                                                            <%= user ? user.name : '' %>
-                                                        </h5>
-                                                        <p class="m-0">
-                                                            <%= user ? user.title : '' %>
-                                                        </p>
-                                                    </div>
-                                                    <button type="submit" class="close-btn-res p-3"><i
-                                                            class="ri-close-fill"></i></button>
-                                                </div>
 
-
-                                            </div>
-                                            <div class="chat-sidebar-channel scroller mt-4 pl-3">
-                                                <h5 class="">Public Channels</h5>
-                                                <ul class="iq-chat-ui nav flex-column nav-pills">
-                                                    <!-- </ul> -->
-                                                    <h5 class="mt-3">Private Channels</h5>
-                                                    <!-- <ul class="iq-chat-ui nav flex-column nav-pills"> -->
-                                                    <!-- </ul> -->
-                                                    <h5 class="mt-3">Direct Message</h5>
-                                                </ul>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-lg-9 chat-data p-0 chat-data-right">
-                                            <div class="tab-content">
-                                                <div class="tab-pane fade active show" id="default-block"
-                                                    role="tabpanel">
-                                                    <div class="chat-start">
-                                                        <span class="iq-start-icon text-primary"><i
-                                                                class="ri-message-3-line"></i></span>
-                                                        <button id="chat-start" class="btn bg-white mt-3">Start
-                                                            Conversation!</button>
-                                                    </div>
+                                    <div class="col-lg-9 chat-data p-0 chat-data-right">
+                                        <div class="tab-content">
+                                            <div class="tab-pane fade active show" id="default-block" role="tabpanel">
+                                                <div class="chat-start">
+                                                    <span class="iq-start-icon text-primary"><i
+                                                            class="ri-message-3-line"></i></span>
+                                                    <button id="chat-start" class="btn bg-white mt-3">Start
+                                                        Conversation!</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -189,50 +60,5 @@
             </div>
         </div>
     </div>
-    <!-- Wrapper END -->
-    <!-- Footer -->
-    <footer class="bg-white iq-footer">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-lg-6 text-right">
-                    Copyright 2021 Collab
-                </div>
-            </div>
-        </div>
-    </footer>
-    <!-- Footer END -->
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="<%=process.env.BASE_URL%>/js/jquery.min.js"></script>
-    <script src="<%=process.env.BASE_URL%>/js/popper.min.js"></script>
-    <script src="<%=process.env.BASE_URL%>/js/bootstrap.min.js"></script>
-    <!-- Appear JavaScript -->
-    <script src="<%=process.env.BASE_URL%>/js/jquery.appear.js"></script>
-    <!-- Countdown JavaScript -->
-    <script src="<%=process.env.BASE_URL%>/js/countdown.min.js"></script>
-    <!-- Counterup JavaScript -->
-    <script src="<%=process.env.BASE_URL%>/js/waypoints.min.js"></script>
-    <script src="<%=process.env.BASE_URL%>/js/jquery.counterup.min.js"></script>
-    <!-- Wow JavaScript -->
-    <script src="<%=process.env.BASE_URL%>/js/wow.min.js"></script>
-    <!-- Apexcharts JavaScript -->
-    <script src="<%=process.env.BASE_URL%>/js/apexcharts.js"></script>
-    <!-- Slick JavaScript -->
-    <script src="<%=process.env.BASE_URL%>/js/slick.min.js"></script>
-    <!-- Select2 JavaScript -->
-    <script src="<%=process.env.BASE_URL%>/js/select2.min.js"></script>
-    <!-- Owl Carousel JavaScript -->
-    <script src="<%=process.env.BASE_URL%>/js/owl.carousel.min.js"></script>
-    <!-- Magnific Popup JavaScript -->
-    <script src="<%=process.env.BASE_URL%>/js/jquery.magnific-popup.min.js"></script>
-    <!-- Smooth Scrollbar JavaScript -->
-    <script src="<%=process.env.BASE_URL%>/js/smooth-scrollbar.js"></script>
-    <!-- lottie JavaScript -->
-    <script src="<%=process.env.BASE_URL%>/js/lottie.js"></script>
-    <!-- Chart Custom JavaScript -->
-    <script src="<%=process.env.BASE_URL%>/js/chart-custom.js"></script>
-    <!-- Custom JavaScript -->
-    <script src="<%=process.env.BASE_URL%>/js/custom.js"></script>
-</body>
-
-</html>
+    </div>
+    <%- include('../partials/footer') %>
