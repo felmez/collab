@@ -8,7 +8,7 @@ const Task = new mongoose.Schema({
     description: {
         type: String,
     },
-    userRef: {
+    team: {
         type: String,
         required: true
     },

@@ -2,8 +2,10 @@ const teamModel = require("../models/team");
 const userModel = require("../models/user");
 
 const getTeams = async (req, res) => {
-    const teams = await teamModel.find({ _id: req.user.teamID });
-    res.render("pages/teams", { teams: teams, user: req.user });
+    const user = await userModel.findOne({ username: req.user.username });
+    const teams = await teamModel.find({ title: user.team });
+    console.log(user);
+    res.render("pages/teams", { teams: teams, user: user });
 };
 
 const createTeam = async (req, res) => {
@@ -27,7 +29,7 @@ const createTeam = async (req, res) => {
 
         usersArray.forEach(async user => {
             const existUser = await userModel.findOne({ username: user });
-            existUser.teamID = team._id;
+            existUser.team = team.title;
             await existUser.save();
         });
 

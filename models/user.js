@@ -51,7 +51,7 @@ const User = new mongoose.Schema({
         type: String,
         required: true
     },
-    teamID: {
+    team: {
         type: String,
         default: ''
     }
