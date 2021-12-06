@@ -47,8 +47,8 @@ app.get("/secret", async (req, res) => {
     res.render("pages/register");
 });
 
-app.get("/feed", async (req, res) => {
-    res.render("pages/feed");
+app.get("/feed", isLogged, async (req, res) => {
+    res.render("pages/feed", { user: req.user });
 });
 
 app.get("/calendar", async (req, res) => {
