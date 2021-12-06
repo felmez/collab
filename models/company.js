@@ -1,3 +1,4 @@
+const { Timestamp } = require('bson');
 const mongoose = require("mongoose");
 
 const Company = new mongoose.Schema({
@@ -21,6 +22,6 @@ const Company = new mongoose.Schema({
         type: String,
         default: ''
     }
-});
+}, { timestamps: true });
 
 module.exports = mongoose.model("companies", Company);

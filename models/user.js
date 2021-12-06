@@ -50,7 +50,11 @@ const User = new mongoose.Schema({
     company: {
         type: String,
         required: true
+    },
+    teamID: {
+        type: String,
+        default: ''
     }
-});
+}, { timestamps: true });
 
 module.exports = mongoose.model("users", User);

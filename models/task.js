@@ -20,6 +20,6 @@ const Task = new mongoose.Schema({
         type: String,
         required: true
     }
-});
+}, { timestamps: true });
 
 module.exports = mongoose.model("tasks", Task);

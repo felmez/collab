@@ -1,7 +1,8 @@
 const teamModel = require("../models/team");
+const userModel = require("../models/user");
 
 const getTeams = async (req, res) => {
-    const teams = await teamModel.find({ company: req.user.company });
+    const teams = await teamModel.find({ _id: req.user.teamID });
     res.render("pages/teams", { teams: teams, user: req.user });
 };
 
@@ -11,14 +12,24 @@ const createTeam = async (req, res) => {
     const teams = await teamModel.find({});
 
     try {
+        const usersArray = users.split(",").map(function (value) {
+            return value.trim();
+        });
+
         const team = new teamModel({
             title: title,
             description: description,
-            users: users,
+            users: usersArray,
             company: req.user.company
         });
 
         await team.save();
+
+        usersArray.forEach(async user => {
+            const existUser = await userModel.findOne({ username: user });
+            existUser.teamID = team._id;
+            await existUser.save();
+        });
 
         if (team._id) {
             res.redirect("/api/teams");
@@ -37,12 +48,16 @@ const updateTeam = async (req, res) => {
 
     const team = await teamModel.findOne({ _id: teamID });
 
+    const usersArray = users.split(",").map(function (value) {
+        return value.trim();
+    });
+
     if (team) {
         await teamModel.updateOne({ _id: teamID }, {
             $set: {
                 title: title,
                 description: description,
-                users: users,
+                users: usersArray,
             }
         }, { new: true }).then(() => {
             res.redirect("/api/teams");

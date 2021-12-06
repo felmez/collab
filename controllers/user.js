@@ -209,7 +209,8 @@ const login = async (req, res) => {
         firstLogin: existUser.firstLogin,
         doneTour: existUser.doneTour,
         company: existUser.company,
-        title: existUser.title
+        title: existUser.title,
+        teamID: existUser.teamID
     };
 
     const token = jwt.sign(userInToken, SECRET_KEY, {
