@@ -81,7 +81,7 @@
             <script>
                 function makeDELETErequest(id) {
                     $.ajax({
-                        url: `http://localhost:3000/api/teams/delete/${id}`,
+                        url: `<%=process.env.BASE_URL%>/api/teams/delete/${id}`,
                         type: 'DELETE',
                         success: function (result) {
                             alert(result)

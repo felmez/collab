@@ -77,7 +77,7 @@
             <script>
                 function makeDELETErequest(id) {
                     $.ajax({
-                        url: `http://localhost:3000/api/projects/delete/${id}`,
+                        url: `<%=process.env.BASE_URL%>/api/projects/delete/${id}`,
                         type: 'DELETE',
                         success: function (result) {
                             alert(result)
