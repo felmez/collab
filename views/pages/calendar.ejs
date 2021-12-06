@@ -1,554 +1,289 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Collab | Calendar</title>
-    <!-- website's icon -->
-    <link rel="shortcut icon" href="images/cLogo.png" />
-    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
-    <link href='https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css' rel='stylesheet'>
-    <link href='https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css' rel='stylesheet'>
-    <link href='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js' rel='stylesheet'>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="<%=process.env.BASE_URL%>/images/cLogo.png" />
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="<%=process.env.BASE_URL%>/css/bootstrap.min.css">
+    <!-- Typography CSS -->
+    <link rel="stylesheet" href="<%=process.env.BASE_URL%>/css/typography.css">
+    <!-- Style CSS -->
+    <link rel="stylesheet" href="<%=process.env.BASE_URL%>/css/style.css">
+    <!-- Responsive CSS -->
+    <link rel="stylesheet" href="<%=process.env.BASE_URL%>/css/responsive.css">
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
-        }
+    <!-- Full calendar -->
+    <link href='<%=process.env.BASE_URL%>/fullcalendar/core/main.css' rel='stylesheet' />
+    <link href='<%=process.env.BASE_URL%>/fullcalendar/daygrid/main.css' rel='stylesheet' />
+    <link href='<%=process.env.BASE_URL%>/fullcalendar/timegrid/main.css' rel='stylesheet' />
+    <link href='<%=process.env.BASE_URL%>/fullcalendar/list/main.css' rel='stylesheet' />
 
-        .sidebar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            height: 100%;
-            width: 260px;
-            background: #fff;
-            z-index: 100;
-            transition: all 0.5s ease;
-        }
-
-        .sidebar.close {
-            width: 78px;
-        }
-
-        .sidebar .logo-details {
-            height: 60px;
-            width: 100%;
-            display: flex;
-            align-items: center;
-        }
-
-        .sidebar .logo-details i {
-            font-size: 30px;
-            height: 55px;
-            min-width: 78px;
-            text-align: center;
-            line-height: 50px;
-        }
-
-        .sidebar .logo-details .logo_name {
-            font-size: 22px;
-            color: #000;
-            font-weight: 600;
-            transition: 0.3s ease;
-            transition-delay: 0.1s;
-        }
-
-        .sidebar.close .logo-details .logo_name {
-            transition-delay: 0s;
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        .sidebar .nav-links {
-            height: 100%;
-            padding: 30px 0 0 0;
-            overflow: auto;
-        }
-
-        .sidebar.close .nav-links {
-            overflow: visible;
-        }
-
-        .sidebar .nav-links::-webkit-scrollbar {
-            display: none;
-        }
-
-        .sidebar .nav-links li {
-            position: relative;
-            list-style: none;
-            transition: all 0.4s ease;
-        }
-
-        .sidebar .nav-links li .iocn-link {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .sidebar.close .nav-links li .iocn-link {
-            display: block
-        }
-
-        .sidebar .nav-links li i {
-            height: 60px;
-            min-width: 78px;
-            text-align: center;
-            line-height: 60px;
-            color: #000;
-            font-size: 20px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .sidebar .nav-links li.showMenu i.arrow {
-            transform: rotate(-180deg);
-        }
-
-        .sidebar.close .nav-links i.arrow {
-            display: none;
-        }
-
-        .sidebar .nav-links li a {
-            display: flex;
-            align-items: center;
-            text-decoration: none;
-        }
-
-        .sidebar .nav-links li a .link_name {
-            font-size: 18px;
-            font-weight: 400;
-            color: #000;
-            transition: all 0.4s ease;
-        }
-
-        .sidebar.close .nav-links li a .link_name {
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        .sidebar .nav-links li .sub-menu {
-            padding: 6px 6px 14px 80px;
-            margin-top: -10px;
-            background: #fff;
-            display: none;
-        }
-
-        .sidebar .nav-links li.showMenu .sub-menu {
-            display: block;
-        }
-
-        .sidebar .nav-links li .sub-menu a {
-            color: #000;
-            font-size: 15px;
-            padding: 5px 0;
-            white-space: nowrap;
-            opacity: 0.6;
-            transition: all 0.3s ease;
-        }
-
-        .sidebar .nav-links li .sub-menu a:hover {
-            opacity: 1;
-            color: #8759F2;
-        }
-
-        .sidebar.close .nav-links li .sub-menu {
-            position: absolute;
-            left: 100%;
-            top: -10px;
-            margin-top: 0;
-            padding: 10px 20px;
-            border-radius: 0 6px 6px 0;
-            opacity: 0;
-            display: block;
-            pointer-events: none;
-            transition: 0s;
-        }
-
-        .sidebar.close .nav-links li:hover .sub-menu {
-            top: 0;
-            opacity: 1;
-            pointer-events: auto;
-            transition: all 0.4s ease;
-        }
-
-        .sidebar .nav-links li .sub-menu .link_name {
-            display: none;
-        }
-
-        .sidebar.close .nav-links li .sub-menu .link_name {
-            font-size: 18px;
-            opacity: 1;
-            display: block;
-        }
-
-        .sidebar .nav-links li .sub-menu.blank {
-            opacity: 1;
-            pointer-events: auto;
-            padding: 3px 20px 6px 16px;
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        .sidebar .nav-links li:hover .sub-menu.blank {
-            top: 50%;
-            transform: translateY(-50%);
-        }
-
-        .sidebar .profile-details {
-            position: fixed;
-            bottom: 0;
-            width: 260px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 12px 0;
-            transition: all 0.5s ease;
-        }
-
-        .sidebar.close .profile-details {
-            background: none;
-        }
-
-        .sidebar.close .profile-details {
-            width: 78px;
-        }
-
-        .sidebar .profile-details .profile-content {
-            display: flex;
-            align-items: center;
-        }
-
-        .sidebar .profile-details .profile_name,
-        .sidebar .profile-details .job {
-            color: #000;
-            font-size: 18px;
-            font-weight: 500;
-            white-space: nowrap;
-        }
-
-        .sidebar.close .profile-details i,
-        .sidebar.close .profile-details .profile_name,
-        .sidebar.close .profile-details .job {
-            display: none;
-        }
-
-        .sidebar .profile-details .job {
-            font-size: 12px;
-        }
-
-        .home-section {
-            position: relative;
-            background: #E4E9F7;
-            padding-bottom: 60px;
-            height: 100%;
-            left: 260px;
-            width: calc(100% - 260px);
-            transition: all 0.5s ease;
-        }
-
-        .sidebar.close~.home-section {
-            left: 78px;
-            width: calc(100% - 78px);
-        }
-
-        .home-section .home-content {
-            height: 60px;
-            display: flex;
-            align-items: center;
-        }
-
-        .home-section .home-content .bx-menu,
-        .home-section .home-content .text {
-            color: #000;
-            font-size: 35px;
-        }
-
-        .home-section .home-content .bx-menu {
-            margin: 0 15px;
-            margin-top: 50px;
-            cursor: pointer;
-        }
-
-        .home-section .home-content .text {
-            font-size: 26px;
-            font-weight: 600;
-        }
-
-        @media (max-width: 420px) {
-            .sidebar.close .nav-links li .sub-menu {
-                display: none;
-            }
-        }
-
-        .mininav-links {
-            display: flex;
-            align-items: center;
-            background: #fff;
-            padding: 10px 10px;
-            border-radius: 12px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-        }
-
-        .mininav-links li {
-            list-style: none;
-            margin: 0 15px;
-        }
-
-        .mininav-links li a {
-            position: relative;
-            color: #333;
-            font-size: 20px;
-            font-weight: 500;
-            padding: 6px 0;
-            text-decoration: none;
-        }
-
-        .mininav-links a:hover {
-            color: #8759F2;
-        }
-
-        .mininav-div {
-            padding-top: 40px;
-            margin: 0 0 0 auto;
-            padding-right: 20px;
-            padding-top: 60px;
-            width: 100%;
-        }
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="stylesheet" href="<%=process.env.BASE_URL%>/vendor/@fortawesome/fontawesome-free/css/all.min.css">
 
 
-        .button {
-            display: inline-block;
-            font-size: 10px;
-            line-height: 50px;
-            text-align: end;
-            text-decoration: none;
-            cursor: pointer;
-            -moz-user-select: none;
-            -khtml-user-select: none;
-            -webkit-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-        }
 
-        .button:hover {
-            transition-duration: 0.4s;
-            -moz-transition-duration: 0.4s;
-            -webkit-transition-duration: 0.4s;
-            -o-transition-duration: 0.4s;
-        }
 
-        .search-container {
-            position: relative;
-            display: inline-block;
-            height: 50px;
-            width: 50px;
-            vertical-align: bottom;
-        }
-
-        .mglass {
-            display: inline-block;
-            pointer-events: none;
-        }
-
-        .searchbutton {
-            position: absolute;
-            font-size: 20px;
-            width: 100%;
-            margin: 0;
-            padding: 0;
-        }
-
-        .search:focus+.searchbutton {
-            transition-duration: 0.4s;
-            -moz-transition-duration: 0.4s;
-            -webkit-transition-duration: 0.4s;
-            -o-transition-duration: 0.4s;
-        }
-
-        .search {
-            position: absolute;
-            left: 49px;
-            outline: none;
-            border: none;
-            padding: 0;
-            width: 0;
-            height: 100%;
-            z-index: 10;
-            transition-duration: 0.4s;
-            -moz-transition-duration: 0.4s;
-            -webkit-transition-duration: 0.4s;
-            -o-transition-duration: 0.4s;
-        }
-
-        .search:focus {
-            border: 2px solid #8759F2;
-            border-radius: 10px;
-            width: 363px;
-            /* Bar width+1px */
-            padding: 0 16px 0 0;
-        }
-
-        .expandright {
-            left: auto;
-            right: 49px;
-        }
-
-        .expandright:focus {
-            padding-right: 10px;
-            padding-left: 10px;
-        }
-    </style>
 </head>
 
 <body>
-
-    <div class="sidebar close" style="margin-top: 25px;">
-        <div class="logo-details">
-            <i class='logo-pic'><img src="images/cLogo.png" style="height: 30px"></i>
-            <span class="logo_name" style="color: #4D4D4D; font-size: 30px;">Collab</span>
+    <!-- loader Start -->
+    <div id="loading">
+        <div id="loading-center">
+            <div class="loader">
+                <div class="cube">
+                    <div class="sides">
+                        <div class="top"></div>
+                        <div class="right"></div>
+                        <div class="bottom"></div>
+                        <div class="left"></div>
+                        <div class="front"></div>
+                        <div class="back"></div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <ul class="nav-links">
-            <li>
-                <a href="#">
-                    <i class='bx bx-grid-alt'></i>
-                    <span class="link_name">Dashboard</span>
-                </a>
-                <ul class="sub-menu blank">
-                    <li><a class="link_name" href="dashboard.html">Dashboard</a></li>
-                </ul>
-            </li>
-            <li>
-                <div class="iocn-link" style="border-left: 3px solid #8759F2;">
-                    <a href="#">
-                        <i class='bx bx-user' style="color: #8759F2;"></i>
-                        <span class="link_name" style="color: #8759F2;">Community</span>
-                    </a>
-                    <i class='bx bxs-chevron-down arrow'></i>
-                </div>
-                <ul class="sub-menu">
-                    <li><a class="link_name">Community</a></li>
-                    <li><a href="feed.html">Feed</a></li>
-                    <li><a href="messeges.html">Messages</a></li>
-                    <li><a href="teams.html">Teams</a></li>
-                    <li><a href="userslist.html">Users</a></li>
-                </ul>
-            </li>
-            <li>
-                <div class="iocn-link">
-                    <a href="#">
-                        <i class='bx bx-book-alt'></i>
-                        <span class="link_name">Management</span>
-                    </a>
-                    <i class='bx bxs-chevron-down arrow'></i>
-                </div>
-                <ul class="sub-menu">
-                    <li><a class="link_name">Management</a></li>
-                    <li><a href="calendar.html">Calendar</a></li>
-                    <li><a href="todolist.html">Tasks</a></li>
-                    <li><a href="projects.html">Projects</a></li>
-                </ul>
-            </li>
-
-            <li>
-                <a href="#">
-                    <i class='bx bx-line-chart'></i>
-                    <span class="link_name">Analytics</span>
-                </a>
-                <ul class="sub-menu blank">
-                    <li><a class="link_name" href="#">Analytics</a></li>
-                </ul>
-            </li>
-
-            <li>
-                <a href="#">
-                    <i class='bx bx-cog'></i>
-                    <span class="link_name">Settings</span>
-                </a>
-                <ul class="sub-menu blank">
-                    <li><a class="link_name" href="#">Settings</a></li>
-                </ul>
-            </li>
-
-            <li>
-
-
-                <div class="profile-details">
-                    <i class='bx bx-log-out'></i>
-                </div>
-
-            </li>
-
-        </ul>
     </div>
-    <section class="home-section">
-        <div class="home-content" style="margin-bottom: 70px; ">
-            <i class='bx bx-menu'></i>
-            <div class="mininav-div">
+    <!-- loader END -->
+    <!-- Wrapper Start -->
+    <div class="wrapper">
+        <!-- Sidebar  -->
+        <div class="iq-sidebar">
+            <div class="iq-sidebar-logo d-flex justify-content-between">
+                <a href="index.html">
+                    <img src="<%=process.env.BASE_URL%>/images/cLogo.png" class="img-fluid" alt="">
+                    <span>Sofbox</span>
+                </a>
+                <div class="iq-menu-bt align-self-center">
+                    <div class="wrapper-menu">
+                        <div class="line-menu half start"></div>
+                        <div class="line-menu"></div>
+                        <div class="line-menu half end"></div>
+                    </div>
+                </div>
+            </div>
+            <div id="sidebar-scrollbar">
+                <nav class="iq-sidebar-menu">
+                    <ul id="iq-sidebar-toggle" class="iq-menu">
+                        <li>
+                            <a href="/dashboard" class="iq-waves-effect collapsed" data-toggle="collapse"
+                                aria-expanded="false"><i class="ri-home-4-line"></i><span>Dashboard</span></a>
+                        </li>
 
-                <ul class="mininav-links" style="width: 100%; margin: 0 auto; ">
-                    <span class="text" style="padding: 15px; margin: 0 auto 0 0;">Hello, Ahmad.</span>
 
-                    <li><a href="#">
-                            <div class="search-container">
-                                <form action="/search" method="get">
-                                    <input class="search expandright" id="searchright" type="search" name="q"
-                                        placeholder="Search">
-                                    <label class="button searchbutton" for="searchright"><span class="mglass"><i
-                                                class='bx bx-search'></i></span></label>
-                                </form>
-                            </div>
+
+                        <li class="active">
+                            <a href="/calendar" class="iq-waves-effect">
+                                <i class="ri-calendar-2-line"></i><span>Calendar</span></a>
+                        </li>
+
+
+                    </ul>
+                </nav>
+                <div class="p-3"></div>
+            </div>
+        </div>
+        <!-- TOP Nav Bar -->
+        <div class="iq-top-navbar">
+            <div class="iq-navbar-custom">
+                <div class="iq-sidebar-logo">
+                    <div class="top-logo">
+                        <a href="index.html" class="logo">
+                            <img src="<%=process.env.BASE_URL%>/images/logo.png" class="img-fluid" alt="">
+                            <span>Collab</span>
                         </a>
-                    </li>
-                    <li><a href="#"><i class='bx bx-bell'></i></a></li>
-                    <li><a href="#"><i class='bx bx-expand'></i></a></li>
-                    <li><a href="#"> <img src="images/Avatar.png"
-                                style="height: 50px; border-radius: 50%; border: 2px solid #4d4d4d;"></a></li>
-                </ul>
-            </div>
-        </div>
-
-
-
-
-        <div>
-
-
-            <div class="container">
-                <div class="row">
-
-                    <div class="col-8" style="height: 100%;">
-
                     </div>
-
-                    <div class="col">
-
-                    </div>
-
                 </div>
+                <div class="navbar-breadcrumb">
+                    <h5 class="mb-0">Calendar</h5>
+                </div>
+                <nav class="navbar navbar-expand-lg navbar-light p-0">
 
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav ml-auto navbar-list">
+                        </ul>
+                    </div>
+                    <ul class="navbar-list">
+                        <li>
+                            <a href="#" class="search-toggle iq-waves-effect bg-primary text-white"><img
+                                    src="<%= user ? user.picture : '' %>" class="img-fluid rounded" alt="user"></a>
+                            <div class="iq-sub-dropdown iq-user-dropdown">
+                                <div class="iq-card shadow-none m-0">
+                                    <div class="iq-card-body p-0 ">
+                                        <div class="bg-primary p-3">
+                                            <h5 class="mb-0 text-white line-height">Hello <%= user ? user.name : '' %>
+                                            </h5>
+                                            <span class="text-white font-size-12">Available</span>
+                                        </div>
+                                        <a href="/profile" class="iq-sub-card iq-bg-primary-hover">
+                                            <div class="media align-items-center">
+                                                <div class="rounded iq-card-icon iq-bg-primary">
+                                                    <i class="ri-file-user-line"></i>
+                                                </div>
+                                                <div class="media-body ml-3">
+                                                    <h6 class="mb-0 ">My Profile</h6>
+                                                    <p class="mb-0 font-size-12">View personal profile details.</p>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                                        <a href="/settings" class="iq-sub-card iq-bg-primary-danger-hover">
+                                            <div class="media align-items-center">
+                                                <div class="rounded iq-card-icon iq-bg-danger">
+                                                    <i class="ri-account-box-line"></i>
+                                                </div>
+                                                <div class="media-body ml-3">
+                                                    <h6 class="mb-0 ">Account settings</h6>
+                                                    <p class="mb-0 font-size-12">Manage your account parameters.</p>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                                        <div class="d-inline-block w-100 text-center p-3">
+                                            <a class="iq-bg-danger iq-sign-btn" href="/api/users/logout"
+                                                role="button">Logout<i class="ri-login-box-line ml-2"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </nav>
             </div>
-
         </div>
-        <div class="container">
+        <!-- TOP Nav Bar END -->
+        <!-- Page Content  -->
+        <div id="content-page" class="content-page">
+            <div class="container-fluid">
+                <div class="row row-eq-height">
+                    <div class="col-md-3">
+                        <div class="iq-card calender-small">
+                            <div class="iq-card-body">
+                                <input type="hidden" class="displayCalendar d-none">
+                            </div>
+                        </div>
+                        <div class="iq-card">
+                            <div class="iq-card-header d-flex justify-content-between">
+                                <div class="iq-header-title">
+                                    <h4 class="card-title ">Classification</h4>
+                                </div>
+
+                                <div class="iq-card-header-toolbar d-flex align-items-center">
+                                    <a href="#"><i class="fa fa-plus  mr-0" aria-hidden="true"></i></a>
+                                </div>
+                            </div>
+                            <div class="iq-card-body">
+                                <ul class="m-0 p-0 job-classification">
+                                    <li class=""><i class="ri-check-line bg-danger"></i>Meeting</li>
+                                    <li class=""><i class="ri-check-line bg-success"></i>Business travel</li>
+                                    <li class=""><i class="ri-check-line bg-warning"></i>Personal Work</li>
+                                    <li class=""><i class="ri-check-line bg-info"></i>Team Project</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="iq-card">
+                            <div class="iq-card-header d-flex justify-content-between">
+                                <div class="iq-header-title">
+                                    <h4 class="card-title">Today's Schedule</h4>
+                                </div>
+                            </div>
+                            <div class="iq-card-body">
+                                <ul class="m-0 p-0 today-schedule">
+                                    <li class="d-flex">
+                                        <div class="schedule-icon"><i
+                                                class="ri-checkbox-blank-circle-fill text-primary"></i></div>
+                                        <div class="schedule-text"> <span>Web Design</span>
+                                            <span>09:00 to 12:00</span>
+                                        </div>
+                                    </li>
+                                    <li class="d-flex">
+                                        <div class="schedule-icon"><i
+                                                class="ri-checkbox-blank-circle-fill text-success"></i></div>
+                                        <div class="schedule-text"> <span>Participate in Design</span>
+                                            <span>09:00 to 12:00</span>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-9">
+                        <div class="iq-card">
+                            <div class="iq-card-header d-flex justify-content-between">
+                                <div class="iq-header-title">
+                                    <h4 class="card-title">Book Appointment</h4>
+                                </div>
+                                <div class="iq-card-header-toolbar d-flex align-items-center">
+                                    <a href="#" class="btn btn-primary"><i class="ri-add-line mr-2"></i>Book
+                                        Appointment</a>
+                                </div>
+                            </div>
+                            <div class="iq-card-body">
+                                <div id='calendar1'></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Wrapper END -->
+    <!-- Footer -->
+    <footer class="bg-white iq-footer">
+        <div class="container-fluid">
             <div class="row">
-                <div class="col-8">
-
-                </div>
-                <div class="col">
-
+                <div class="col-lg-6 text-right">
+                    Copyright 2021 Collab
                 </div>
             </div>
-
         </div>
+    </footer>
+    <!-- Footer END -->
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="<%=process.env.BASE_URL%>/js/jquery.min.js"></script>
+    <script src="<%=process.env.BASE_URL%>/js/popper.min.js"></script>
+    <script src="<%=process.env.BASE_URL%>/js/bootstrap.min.js"></script>
+    <!-- Appear JavaScript -->
+    <script src="<%=process.env.BASE_URL%>/js/jquery.appear.js"></script>
+    <!-- Countdown JavaScript -->
+    <script src="<%=process.env.BASE_URL%>/js/countdown.min.js"></script>
+    <!-- Counterup JavaScript -->
+    <script src="<%=process.env.BASE_URL%>/js/waypoints.min.js"></script>
+    <script src="<%=process.env.BASE_URL%>/js/jquery.counterup.min.js"></script>
+    <!-- Wow JavaScript -->
+    <script src="<%=process.env.BASE_URL%>/js/wow.min.js"></script>
+    <!-- Apexcharts JavaScript -->
+    <script src="<%=process.env.BASE_URL%>/js/apexcharts.js"></script>
+    <!-- Slick JavaScript -->
+    <script src="<%=process.env.BASE_URL%>/js/slick.min.js"></script>
+    <!-- Select2 JavaScript -->
+    <script src="<%=process.env.BASE_URL%>/js/select2.min.js"></script>
+    <!-- Owl Carousel JavaScript -->
+    <script src="<%=process.env.BASE_URL%>/js/owl.carousel.min.js"></script>
+    <!-- Magnific Popup JavaScript -->
+    <script src="<%=process.env.BASE_URL%>/js/jquery.magnific-popup.min.js"></script>
+    <!-- Smooth Scrollbar JavaScript -->
+    <script src="<%=process.env.BASE_URL%>/js/smooth-scrollbar.js"></script>
+    <!-- lottie JavaScript -->
+    <script src="<%=process.env.BASE_URL%>/js/lottie.js"></script>
+    <!-- Full calendar -->
+    <script src='<%=process.env.BASE_URL%>/fullcalendar/core/main.js'></script>
+    <script src='<%=process.env.BASE_URL%>/fullcalendar/daygrid/main.js'></script>
+    <script src='<%=process.env.BASE_URL%>/fullcalendar/timegrid/main.js'></script>
+    <script src='<%=process.env.BASE_URL%>/fullcalendar/list/main.js'></script>
+    <!-- Flatpicker Js -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <!-- Chart Custom JavaScript -->
+    <script src="<%=process.env.BASE_URL%>/js/chart-custom.js"></script>
+    <!-- Custom JavaScript -->
+    <script src="<%=process.env.BASE_URL%>/js/custom.js"></script>
+</body>
 
-
-
-
-    </section>
+</html>

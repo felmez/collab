@@ -51,8 +51,8 @@ app.get("/feed", isLogged, async (req, res) => {
     res.render("pages/feed", { user: req.user });
 });
 
-app.get("/calendar", async (req, res) => {
-    res.render("pages/calendar");
+app.get("/calendar", isLogged, async (req, res) => {
+    res.render("pages/calendar", { user: req.user });
 });
 
 app.get("/profile", isLogged, async (req, res) => {

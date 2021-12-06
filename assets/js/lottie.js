@@ -1003,7 +1003,7 @@ var Matrix = (function(){
 var BezierFactory = (function(){
     /**
      * BezierEasing - use bezier curve for transition easing function
-     * by GaÃ«tan Renaudeau 2014 - 2015 â€“ MIT License
+     * by Gaëtan Renaudeau 2014 - 2015 – MIT License
      *
      * Credits: is based on Firefox's nsSMILKeySpline.cpp
      * Usage:
