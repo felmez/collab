@@ -9,8 +9,8 @@ const teamRoutes = require('./team');
 
 routes.use('/users', userRoutes);
 routes.use('/tasks', taskRoutes);
-routes.use('/projects', projectRoutes);
-routes.use('/companies', companyRoutes);
+// routes.use('/projects', projectRoutes);
+// routes.use('/companies', companyRoutes);
 routes.use('/teams', teamRoutes);
 
 module.exports = routes;
