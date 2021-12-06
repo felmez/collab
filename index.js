@@ -63,8 +63,8 @@ app.get("/survey", async (req, res) => {
     res.render("pages/survey");
 });
 
-app.get("/messages", async (req, res) => {
-    res.render("pages/messages");
+app.get("/chats", isLogged, async (req, res) => {
+    res.render("pages/chats", { user: req.user });
 });
 
 app.get("/analytics", isLogged, async (req, res) => {

@@ -1,35 +1,3 @@
-/*
-Template: Sofbox - Responsive Bootstrap 4 Admin Dashboard Template
-Author: iqonicthemes.in
-Design and Developed by: iqonicthemes.in
-NOTE: This file contains the styling for responsive Template.
-*/
-
-/*----------------------------------------------
-Index Of Script
-------------------------------------------------
-
-:: Tooltip
-:: Sidebar Widget
-:: Magnific Popup
-:: Ripple Effect
-:: Accordion
-:: Ticket Booking
-:: Owl Carousel
-:: Search input
-:: Scrollbar
-:: Counter
-:: slick
-:: Progress Bar
-:: Page Loader
-:: Page Menu
-:: Wow Animation
-:: Mail Inbox
-
-------------------------------------------------
-Index Of Script
-----------------------------------------------*/
-
 (function(jQuery) {
 
 
