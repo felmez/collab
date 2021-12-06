@@ -208,7 +208,8 @@ const login = async (req, res) => {
         picture: existUser.picture,
         firstLogin: existUser.firstLogin,
         doneTour: existUser.doneTour,
-        company: existUser.company
+        company: existUser.company,
+        title: existUser.title
     };
 
     const token = jwt.sign(userInToken, SECRET_KEY, {

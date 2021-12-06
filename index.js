@@ -47,6 +47,26 @@ app.get("/secret", async (req, res) => {
     res.render("pages/register");
 });
 
+app.get("/feed", async (req, res) => {
+    res.render("pages/feed");
+});
+
+app.get("/calendar", async (req, res) => {
+    res.render("pages/calendar");
+});
+
+app.get("/profile", isLogged, async (req, res) => {
+    res.render("pages/profile", { user: req.user });
+});
+
+app.get("/survey", async (req, res) => {
+    res.render("pages/survey");
+});
+
+app.get("/messages", async (req, res) => {
+    res.render("pages/messages");
+});
+
 app.listen(port, () => {
     console.log(`Server listening on http://localhost:${port}`);
     connectToMongo();

@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Collab | Profile</title>
     <!-- website's icon -->
-    <link rel="shortcut icon" href="images/cLogo.png" />
+    <link rel="shortcut icon" href="<%=process.env.BASE_URL%>/images/cLogo.png" />
     <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
     <link href='https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css' rel='stylesheet'>
     <link href='https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css' rel='stylesheet'>
@@ -893,17 +893,17 @@
 
     <div class="sidebar close" style="margin-top: 25px;">
         <div class="logo-details">
-            <i class='logo-pic'><img src="images/cLogo.png" style="height: 30px"></i>
+            <i class='logo-pic'><img src="<%=process.env.BASE_URL%>/images/cLogo.png" style="height: 30px"></i>
             <span class="logo_name" style="color: #4D4D4D; font-size: 30px;">Collab</span>
         </div>
         <ul class="nav-links">
             <li>
-                <a href="#">
+                <a href="/dashboard">
                     <i class='bx bx-grid-alt'></i>
                     <span class="link_name">Dashboard</span>
                 </a>
                 <ul class="sub-menu blank">
-                    <li><a class="link_name" href="dashboard.html">Dashboard</a></li>
+                    <li><a class="link_name" href="/dashboard">Dashboard</a></li>
                 </ul>
             </li>
             <li>
@@ -916,11 +916,11 @@
                 </div>
                 <ul class="sub-menu">
                     <li><a class="link_name">Community</a></li>
-                    <li><a href="feed.html">Feed</a></li>
-                    <li><a href="profile.html">Profile</a></li>
-                    <li><a href="messeges.html">Messages</a></li>
-                    <li><a href="teams.html">Teams</a></li>
-                    <li><a href="userslist.html">Users</a></li>
+                    <li><a href="/feed">Feed</a></li>
+                    <li><a href="/profile">Profile</a></li>
+                    <li><a href="/messages">Messages</a></li>
+                    <li><a href="/teams">Teams</a></li>
+                    <li><a href="/users">Users</a></li>
                 </ul>
             </li>
             <li>
@@ -933,9 +933,9 @@
                 </div>
                 <ul class="sub-menu">
                     <li><a class="link_name">Management</a></li>
-                    <li><a href="calendar.html">Calendar</a></li>
-                    <li><a href="todolist.html">Tasks</a></li>
-                    <li><a href="projects.html">Projects</a></li>
+                    <li><a href="/calendar">Calendar</a></li>
+                    <li><a href="/tasks">Tasks</a></li>
+                    <li><a href="/projects">Projects</a></li>
                 </ul>
             </li>
 
@@ -950,12 +950,12 @@
             </li>
 
             <li>
-                <a href="#">
+                <a href="/settings">
                     <i class='bx bx-cog'></i>
                     <span class="link_name">Settings</span>
                 </a>
                 <ul class="sub-menu blank">
-                    <li><a class="link_name" href="#">Settings</a></li>
+                    <li><a class="link_name" href="/settings">Settings</a></li>
                 </ul>
             </li>
 
@@ -963,7 +963,7 @@
 
 
                 <div class="profile-details">
-                    <i class='bx bx-log-out'></i>
+                    <a href="/api/users/logout" class="nav-link active"><i class='bx bx-log-out'></i></a>
                 </div>
 
             </li>
@@ -976,7 +976,8 @@
             <div class="mininav-div">
 
                 <ul class="mininav-links" style="width: 100%; margin: 0 auto; ">
-                    <span class="text" style="padding: 15px; margin: 0 auto 0 0;">Hello, Ahmad.</span>
+                    <span class="text" style="padding: 15px; margin: 0 auto 0 0;">Hello, <%= user ? user.name
+                            : 'not user' %>.</span>
 
                     <li><a href="#">
                             <div class="search-container">
@@ -991,8 +992,11 @@
                     </li>
                     <li><a href="#"><i class='bx bx-bell'></i></a></li>
                     <li><a href="#"><i class='bx bx-expand'></i></a></li>
-                    <li><a href="#"> <img src="images/Avatar.png"
+                    <li><a href="/profile" class="profile"> <img src="<%= user ? user.picture : '' %>"
                                 style="height: 50px; border-radius: 50%; border: 2px solid #4d4d4d;"></a></li>
+                    <li class="nav-item logout">
+                        <a href="/api/users/logout" class="nav-link active">Logout</a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -1009,9 +1013,13 @@
                     <div class="card social-prof">
                         <div class="card-body">
                             <div class="wrapper">
-                                <img src="images/Avatar.png" alt="" class="user-profile">
-                                <h3>Ahmad</h3>
-                                <p>Web Developer</p>
+                                <img src="<%= user ? user.picture : '' %>" alt="" class="user-profile">
+                                <h3>
+                                    <%= user ? user.name : 'not user' %>
+                                </h3>
+                                <p>
+                                    <%= user ? user.title : 'not user' %>
+                                </p>
                             </div>
                             <div class="row ">
                                 <div class="col-lg-12">
@@ -1030,10 +1038,13 @@
                         <div class="col-lg-3">
                             <div class="card">
                                 <div class="card-body">
-                                    <div class="h5 text-blue">@Ahmad</div>
-                                    <div class="h7 "><strong>Name :</strong>Ahmad </div>
-                                    <div class="h7"><strong>About :</strong> Developer of web applications, JavaScript,
-                                        PHP, Java, Python, Ruby, Java, Node.js, etc.
+                                    <div class="h5 text-blue">@<%= user ? user.username : 'not user' %>
+                                    </div>
+                                    <div class="h7 "><strong>Name :</strong>
+                                        <%= user ? user.name : 'not user' %>
+                                    </div>
+                                    <div class="h7"><strong>About :</strong>
+                                        <%= user ? user.title : 'not user' %>.
                                     </div>
                                 </div>
 
