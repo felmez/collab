@@ -7,6 +7,7 @@ const connectToMongo = require("./database/config");
 const apiRoutes = require('./routes');
 const { isLogged } = require('./middleware/isLogged');
 const taskModel = require('./models/task');
+const userModel = require('./models/user');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -32,14 +33,13 @@ app.get("/", isLogged, async (req, res) => {
 });
 
 app.get("/dashboard", isLogged, async (req, res) => {
+    const user = await userModel.findOne({ username: req.user.username });
     if (req.user.firstLogin == true) {
         res.redirect('/settings');
     } else {
-        const tasks = await taskModel.find({ team: req.user.team });
-
-        res.render("pages/dashboard", { user: req.user, tasks: tasks });
+        const tasks = await taskModel.find({ team: user.team });
+        res.render("pages/dashboard", { user: user, tasks: tasks });
     }
-    console.log(req.user);
 });
 
 app.get("/settings", isLogged, async (req, res) => {
