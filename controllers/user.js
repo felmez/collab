@@ -4,6 +4,7 @@ const nodemailer = require('nodemailer');
 
 const userModel = require("../models/user");
 const companyModel = require("../models/company");
+const chatModel = require("../models/chat");
 const { SECRET_KEY } = require('../middleware/isLogged');
 
 const transporter = nodemailer.createTransport({
@@ -18,7 +19,16 @@ const transporter = nodemailer.createTransport({
 
 const getUsers = async (req, res) => {
     const users = await userModel.find({ company: req.user.company });
-    res.render("pages/users", { users: users, user: req.user });
+    const user = await userModel.findOne({ username: req.user.username });
+
+    const chats = await chatModel.find({
+        $or: [{
+            sender: user.username
+        }, {
+            receiver: user.username
+        }]
+    });
+    res.render("pages/users", { users: users, user: req.user, chats: chats });
 };
 
 const createUser = async (req, res) => {

@@ -1,17 +1,36 @@
 const teamModel = require("../models/team");
 const userModel = require("../models/user");
+const chatModel = require("../models/chat");
 
 const getTeams = async (req, res) => {
     const user = await userModel.findOne({ username: req.user.username });
     const teams = await teamModel.find({ title: user.team });
+    const chats = await chatModel.find({
+        $or: [{
+            sender: user.username
+        }, {
+            receiver: user.username
+        }]
+    });
     console.log(user);
-    res.render("pages/teams", { teams: teams, user: user });
+    res.render("pages/teams", { teams: teams, user: user, chats: chats });
 };
 
 const createTeam = async (req, res) => {
     const { title, description, users } = req.body;
 
     const teams = await teamModel.find({});
+
+    const user = await userModel.findOne({ username: req.user.username });
+
+
+    const chats = await chatModel.find({
+        $or: [{
+            sender: user.username
+        }, {
+            receiver: user.username
+        }]
+    });
 
     try {
         const usersArray = users.split(",").map(function (value) {
@@ -36,10 +55,10 @@ const createTeam = async (req, res) => {
         if (team._id) {
             res.redirect("/api/teams");
         } else {
-            res.render("pages/teams", { error: 'could not create team', user: req.user, teams: teams });
+            res.render("pages/teams", { error: 'could not create team', user: req.user, chats: chats, teams: teams });
         }
     } catch (error) {
-        res.render("pages/teams", { error: error, user: req.user, teams: teams });
+        res.render("pages/teams", { error: error, user: req.user, teams: teams, chats: chats });
     }
 };
 

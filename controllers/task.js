@@ -1,18 +1,34 @@
 const taskModel = require("../models/task");
 const teamModel = require("../models/team");
 const userModel = require("../models/user");
+const chatModel = require("../models/chat");
 
 const getTasks = async (req, res) => {
     const user = await userModel.findOne({ username: req.user.username });
     const tasks = await taskModel.find({ team: user.team });
     const teams = await teamModel.find({ company: req.user.company, _id: req.user.teamID });
-    res.render("pages/tasks", { tasks: tasks, user: user, teams: teams });
+    const chats = await chatModel.find({
+        $or: [{
+            sender: user.username
+        }, {
+            receiver: user.username
+        }]
+    });
+    res.render("pages/tasks", { tasks: tasks, user: user, teams: teams, chats: chats });
 };
 
 
 const createTask = async (req, res) => {
     const { title, description } = req.body;
     const user = await userModel.findOne({ username: req.user.username });
+
+    const chats = await chatModel.find({
+        $or: [{
+            sender: user.username
+        }, {
+            receiver: user.username
+        }]
+    });
 
 
     const tasks = await taskModel.find({});
@@ -30,10 +46,10 @@ const createTask = async (req, res) => {
         if (task._id) {
             res.redirect("/api/tasks");
         } else {
-            res.render("pages/tasks", { error: 'could not create task', user: user, tasks: tasks });
+            res.render("pages/tasks", { error: 'could not create task', user: user, tasks: tasks, chats: chats });
         }
     } catch (error) {
-        res.render("pages/tasks", { error: error, user: user, tasks: tasks });
+        res.render("pages/tasks", { error: error, user: user, tasks: tasks, chats: chats });
     }
 };
 

@@ -8,6 +8,7 @@ const apiRoutes = require('./routes');
 const { isLogged } = require('./middleware/isLogged');
 const taskModel = require('./models/task');
 const userModel = require('./models/user');
+const chatModel = require('./models/chat');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -37,13 +38,29 @@ app.get("/dashboard", isLogged, async (req, res) => {
     if (req.user.firstLogin == true) {
         res.redirect('/settings');
     } else {
+        const chats = await chatModel.find({
+            $or: [{
+                sender: user.username
+            }, {
+                receiver: user.username
+            }]
+        });
         const tasks = await taskModel.find({ team: user.team });
-        res.render("pages/dashboard", { user: user, tasks: tasks });
+        res.render("pages/dashboard", { user: user, tasks: tasks, chats: chats });
     }
 });
 
 app.get("/settings", isLogged, async (req, res) => {
-    res.render("pages/settings", { user: req.user });
+    const user = await userModel.findOne({ username: req.user.username });
+
+    const chats = await chatModel.find({
+        $or: [{
+            sender: user.username
+        }, {
+            receiver: user.username
+        }]
+    });
+    res.render("pages/settings", { user: req.user, chats: chats });
 });
 
 app.get("/secret", async (req, res) => {
@@ -51,15 +68,42 @@ app.get("/secret", async (req, res) => {
 });
 
 app.get("/feed", isLogged, async (req, res) => {
-    res.render("pages/feed", { user: req.user });
+    const user = await userModel.findOne({ username: req.user.username });
+
+    const chats = await chatModel.find({
+        $or: [{
+            sender: user.username
+        }, {
+            receiver: user.username
+        }]
+    });
+    res.render("pages/feed", { user: req.user, chats: chats });
 });
 
 app.get("/calendar", isLogged, async (req, res) => {
-    res.render("pages/calendar", { user: req.user });
+    const user = await userModel.findOne({ username: req.user.username });
+
+    const chats = await chatModel.find({
+        $or: [{
+            sender: user.username
+        }, {
+            receiver: user.username
+        }]
+    });
+    res.render("pages/calendar", { user: req.user, chats: chats });
 });
 
 app.get("/profile", isLogged, async (req, res) => {
-    res.render("pages/profile", { user: req.user });
+    const user = await userModel.findOne({ username: req.user.username });
+
+    const chats = await chatModel.find({
+        $or: [{
+            sender: user.username
+        }, {
+            receiver: user.username
+        }]
+    });
+    res.render("pages/profile", { user: req.user, chats: chats });
 });
 
 app.get("/survey", async (req, res) => {
@@ -67,7 +111,16 @@ app.get("/survey", async (req, res) => {
 });
 
 app.get("/analytics", isLogged, async (req, res) => {
-    res.render("pages/analytics", { user: req.user });
+    const user = await userModel.findOne({ username: req.user.username });
+
+    const chats = await chatModel.find({
+        $or: [{
+            sender: user.username
+        }, {
+            receiver: user.username
+        }]
+    });
+    res.render("pages/analytics", { user: req.user, chats: chats });
 });
 
 
