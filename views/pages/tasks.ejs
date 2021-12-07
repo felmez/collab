@@ -674,46 +674,7 @@
                                     </div>
                                 </a>
                             </li>
-                            <li class="nav-item dropdown">
-                                <a href="#" class="search-toggle   dropdown-toggle" id="notification-drop"
-                                    data-bs-toggle="dropdown">
-                                    <i class="bx bx-bell"></i>
-                                </a>
-                                <div class="sub-drop dropdown-menu" aria-labelledby="notification-drop">
-                                    <div class="card shadow-none m-0">
-                                        <div class="card-header d-flex justify-content-between bg-primary">
-                                            <div class="header-title bg-primary">
-                                                <h6 class="mb-0 text-white">All Notifications</h6>
-                                            </div>
-                                            <small class="badge  bg-light text-dark">
-                                                <%= chats.length %>
-                                            </small>
-                                        </div>
-                                        <div class="card-body p-0">
-                                            <% chats.forEach(function(chat){ %>
-                                                <a href="#" class="iq-sub-card">
-                                                    <div class="d-flex align-items-center">
-                                                        <div class="ms-3 w-100">
-                                                            <h6 class="mb-0 ">From: <%= chat.sender %>
-                                                            </h6>
-                                                            <h6 class="mb-0 ">To: <%= chat.receiver %>
-                                                            </h6>
 
-                                                            <p class="mb-0">
-                                                                <%= chat.message %>
-                                                            </p>
-                                                            <small class="float-right font-size-12">
-                                                                <%= chat.createdAt %>
-                                                            </small>
-
-                                                        </div>
-                                                    </div>
-                                                </a>
-                                                <% });%>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
                             <li><a href="#"><i class='bx bx-bell'></i></a></li>
                             <li><a href="#"><i class='bx bx-expand'></i></a></li>
                             <li><a href="/profile"> <img src="<%= user ? user.picture : '' %>"
