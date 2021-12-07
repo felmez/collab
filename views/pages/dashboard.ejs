@@ -66,40 +66,25 @@
                         </div>
                         <div class="iq-card-body">
                             <ul class="iq-timeline">
-                                <li>
-                                    <div class="timeline-dots"></div>
-                                    <h6 class="float-left mb-1">Lorem Ipsum</h6>
-                                    <small class="float-right mt-1">24 Nov 2021</small>
-                                    <div class="d-inline-block w-100">
-                                        <p>Bonbon macaroon jelly beans gummi bears jelly lollipop apple</p>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="timeline-dots border-success"></div>
-                                    <h6 class="float-left mb-1">Lorem Ipsum</h6>
-                                    <small class="float-right mt-1">24 Nov 2021</small>
-                                    <div class="d-inline-block w-100">
-                                        <p>Bonbon macaroon jelly beans gummi bears jelly lollipop apple</p>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="timeline-dots border-danger"></div>
-                                    <h6 class="float-left mb-1">Lorem Ipsum</h6>
-                                    <small class="float-right mt-1">24 Nov 2021</small>
-                                    <div class="d-inline-block w-100">
-                                        <p>Bonbon macaroon jelly beans gummi bears gummi bears jelly lollipop apple
-                                        </p>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="timeline-dots border-primary"></div>
-                                    <h6 class="float-left mb-1">Lorem Ipsum</h6>
-                                    <small class="float-right mt-1">24 Nov 2021</small>
-                                    <div class="d-inline-block w-100">
-                                        <p>Bonbon macaroon jelly beans gummi bears jelly lollipop apple</p>
-                                    </div>
-                                </li>
-
+                                <% tasks.forEach(function(task){ %>
+                                    <li>
+                                        <div class="timeline-dots"></div>
+                                        <h6 class="float-left mb-1">
+                                            <%= task.title%>
+                                        </h6>
+                                        <small class="float-right mt-1">
+                                            <%= task.createdAt%>
+                                        </small>
+                                        <div class="d-inline-block w-100">
+                                            <p>
+                                                <%= task.description%>
+                                            </p>
+                                        </div>
+                                        <small class="float-right mt-1">
+                                            <%= task.status%>
+                                        </small>
+                                    </li>
+                                    <% }); %>
                             </ul>
                         </div>
                     </div>

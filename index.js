@@ -6,6 +6,7 @@ const cookieParser = require('cookie-parser');
 const connectToMongo = require("./database/config");
 const apiRoutes = require('./routes');
 const { isLogged } = require('./middleware/isLogged');
+const taskModel = require('./models/task');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -34,7 +35,9 @@ app.get("/dashboard", isLogged, async (req, res) => {
     if (req.user.firstLogin == true) {
         res.redirect('/settings');
     } else {
-        res.render("pages/dashboard", { user: req.user });
+        const tasks = await taskModel.find({ team: req.user.team });
+
+        res.render("pages/dashboard", { user: req.user, tasks: tasks });
     }
     console.log(req.user);
 });
