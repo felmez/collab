@@ -29,31 +29,100 @@
 
                                         </div>
                                         <div class="chat-sidebar-channel scroller mt-4 pl-3">
-                                            <h5 class="">Public Channels</h5>
                                             <ul class="iq-chat-ui nav flex-column nav-pills">
-                                                <!-- </ul> -->
-                                                <h5 class="mt-3">Private Channels</h5>
-                                                <!-- <ul class="iq-chat-ui nav flex-column nav-pills"> -->
-                                                <!-- </ul> -->
-                                                <h5 class="mt-3">Direct Message</h5>
+                                                <% chats.forEach(function(chat){ %>
+                                                    <li>
+                                                        <h6>From: <%= chat.sender %>
+                                                        </h6>
+                                                        <h6>To: <%= chat.receiver %>
+                                                        </h6>
+                                                        <h6>Message: <%= chat.message %>
+                                                        </h6>
+                                                        <h6>Date: <%= chat.createdAt %>
+                                                        </h6>
+                                                    </li>
+                                                    <hr>
+                                                    <% });%>
                                             </ul>
                                         </div>
                                     </div>
 
                                     <div class="col-lg-9 chat-data p-0 chat-data-right">
                                         <div class="tab-content">
+
                                             <div class="tab-pane fade active show" id="default-block" role="tabpanel">
+
                                                 <div class="chat-start">
-                                                    <span class="iq-start-icon text-primary"><i
-                                                            class="ri-message-3-line"></i></span>
-                                                    <button id="chat-start" class="btn bg-white mt-3">Start
-                                                        Conversation!</button>
+                                                    <form class="mt-4" method="POST" action="/api/chats/create">
+                                                        <div class="form-group">
+                                                            <label class="form-label" for="receiver">Send To
+                                                                (username)</label>
+                                                            <input type="text" name="receiver" class="form-control mb-0"
+                                                                id="receiver" placeholder="Send To" required>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="form-label" for="message">Message</label>
+                                                            <input type="text" name="message" class="form-control mb-0"
+                                                                id="message" placeholder="Message" required>
+                                                        </div>
+                                                        <div class="d-inline-block w-100">
+                                                            <button type="submit" class="btn btn-primary float-end"><i
+                                                                    class="ri-message-3-line"></i>Send
+                                                                Message</button>
+                                                        </div>
+                                                    </form>
                                                 </div>
                                             </div>
+
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="addChatModal" tabindex="-1" role="dialog" aria-labelledby="addnotesmodalTitle"
+        style="display: none;" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content border-0">
+                <div class="modal-header bg-info text-white">
+                    <h5 class="modal-title text-white">Add Tasks</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="notes-box">
+                        <div class="notes-content">
+                            <form class="mt-4" method="POST" action="/api/tasks/create">
+                                <div class="form-group">
+                                    <label class="form-label" for="title">Task Title</label>
+                                    <input type="text" name="title" class="form-control mb-0" id="title"
+                                        placeholder="Title" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="description">Task
+                                        Description</label>
+                                    <input type="text" name="description" class="form-control mb-0" id="description"
+                                        placeholder="Description" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="description">Task
+                                        Team</label>
+                                    <input type="text" name="team" class="form-control mb-0" id="team"
+                                        value="<%= user.team %>" disabled>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="description">Task
+                                        Company</label>
+                                    <input type="text" name="company" class="form-control mb-0" id="company"
+                                        value="<%= user.company %>" disabled>
+                                </div>
+                                <div class="d-inline-block w-100">
+                                    <button type="submit" class="btn btn-primary float-end">Submit</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
