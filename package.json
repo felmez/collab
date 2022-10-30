@@ -21,7 +21,7 @@
     "mongodb": "^4.2.0",
     "mongoose": "^6.0.13",
     "nodemailer": "^6.7.2",
-    "passport": "^0.5.0",
+    "passport": "^0.6.0",
     "shepherd.js": "^10.0.1"
   },
   "devDependencies": {
